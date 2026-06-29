@@ -58,5 +58,12 @@ export const IapPurchaseStoredPropertiesSchema = IapPurchaseEventPropertiesSchem
     price_usd: z.number().nonnegative().nullable().optional(),
     /** True when client provided price + currency but FX conversion was unavailable. */
     fx_unavailable: z.boolean().optional(),
-  });
+  })
+  .refine(
+    (v) => (v.price === undefined) === (v.currency === undefined),
+    {
+      message: 'price and currency must be provided together',
+      path: ['price'],
+    },
+  );
 export type IapPurchaseStoredProperties = z.infer<typeof IapPurchaseStoredPropertiesSchema>;

@@ -121,21 +121,23 @@ export const refineManifestScreens = (
           { children: l.children, optionBindings: l.optionBindings },
           ctx,
         );
-        const knownOptionIds = new Set(l.optionBindings.map((b) => b.optionId));
-        for (const cond of l.branching.conditions) {
-          if (!screenIds.has(cond.goTo)) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: `screen "${screen.id}" branch condition "${cond.choiceId}" -> "${cond.goTo}" not found`,
-              path: ['screens', screenIdx],
-            });
-          }
-          if (!knownOptionIds.has(cond.choiceId)) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: `screen "${screen.id}" branch condition references unknown choice "${cond.choiceId}"`,
-              path: ['screens', screenIdx],
-            });
+        if (l.branching.enabled) {
+          const knownOptionIds = new Set(l.optionBindings.map((b) => b.optionId));
+          for (const cond of l.branching.conditions) {
+            if (!screenIds.has(cond.goTo)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `screen "${screen.id}" branch condition "${cond.choiceId}" -> "${cond.goTo}" not found`,
+                path: ['screens', screenIdx],
+              });
+            }
+            if (!knownOptionIds.has(cond.choiceId)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `screen "${screen.id}" branch condition references unknown choice "${cond.choiceId}"`,
+                path: ['screens', screenIdx],
+              });
+            }
           }
         }
       }
