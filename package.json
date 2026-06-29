@@ -1,0 +1,20 @@
+{
+  "name": "rheo-contracts",
+  "private": true,
+  "packageManager": "pnpm@8.15.9",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "build": "pnpm --filter @getrheo/contracts build",
+    "check:public-exports": "node scripts/check-public-exports.mjs",
+    "check:npm-publish-graph": "node scripts/check-npm-publish-graph-contracts.mjs",
+    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test && pnpm check:public-exports && pnpm check:npm-publish-graph"
+  },
+  "devDependencies": {
+    "turbo": "^2.9.6"
+  }
+}
