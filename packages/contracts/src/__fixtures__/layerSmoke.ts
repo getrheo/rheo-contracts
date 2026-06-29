@@ -258,10 +258,10 @@ export const layerSmokeMotionScreen = (): Screen => ({
         kind: 'text',
         text: { default: 'Animated' },
         style: { color: DEFAULT_THEMED_FOREGROUND },
-        restingMotion: [
+        restingMotions: [
           {
             id: 'rest_sm_pulse',
-            preset: 'opacity',
+            preset: 'pulse',
             durationMs: 800,
             timelineStartMs: 500,
           },
