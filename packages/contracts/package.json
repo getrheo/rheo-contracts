@@ -1,6 +1,6 @@
 {
   "name": "@getrheo/contracts",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -161,5 +161,8 @@
     "type": "git",
     "url": "git+https://github.com/getrheo/rheo-contracts.git",
     "directory": "packages/contracts"
+  },
+  "bugs": {
+    "url": "https://github.com/getrheo/rheo-contracts/issues"
   }
 }
