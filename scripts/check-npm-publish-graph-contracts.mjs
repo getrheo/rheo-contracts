@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const repoRoot = join(fileURLToPath(new URL('.', import.meta.url)), '..');
+const repoRoot = join(new URL('.', import.meta.url).pathname, '..');
 const targetVersion = process.env.TARGET_VERSION ?? JSON.parse(
   readFileSync(join(repoRoot, 'packages/contracts/package.json'), 'utf8'),
 ).version;

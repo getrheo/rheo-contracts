@@ -54,7 +54,8 @@ export const CanvasEditorGatesPatchSchema = z
     emailPasswordField: z.boolean().optional(),
     emailPasswordSubmit: z.boolean().optional(),
     requestOsPermission: z.boolean().optional(),
-  });
+  })
+  .strict();
 
 export type CanvasEditorGatesPatch = z.infer<typeof CanvasEditorGatesPatchSchema>;
 

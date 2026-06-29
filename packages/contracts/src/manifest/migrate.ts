@@ -95,16 +95,6 @@ const migrateLayerInPlace = (layer: unknown): void => {
     for (const c of (l as { children: unknown[] }).children) migrateLayerInPlace(c);
   } else if (l.kind === 'email_password_submit' && Array.isArray((l as { children?: unknown[] }).children)) {
     for (const c of (l as { children: unknown[] }).children) migrateLayerInPlace(c);
-  } else if (
-    (l.kind === 'single_choice' || l.kind === 'multiple_choice') &&
-    Array.isArray(l.children)
-  ) {
-    for (const c of l.children) migrateLayerInPlace(c);
-  } else if (
-    (l.kind === 'text_input' || l.kind === 'scale_input') &&
-    Array.isArray((l as { children?: unknown[] }).children)
-  ) {
-    for (const c of (l as { children: unknown[] }).children) migrateLayerInPlace(c);
   }
 };
 
