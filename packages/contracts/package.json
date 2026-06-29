@@ -1,0 +1,165 @@
+{
+  "name": "@getrheo/contracts",
+  "version": "2.0.1",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./animations": "./src/animations.ts",
+    "./__fixtures__/*": "./src/__fixtures__/*.ts",
+    "./appIntegrations": "./src/appIntegrations.ts",
+    "./branding": "./src/branding.ts",
+    "./canvasEditorGates": "./src/canvasEditorGates.ts",
+    "./constants": "./src/constants/index.ts",
+    "./decisions": "./src/decisions.ts",
+    "./events": "./src/events.ts",
+    "./externalSurfaceIntegrations": "./src/externalSurfaceIntegrations.ts",
+    "./externalSurfaces": "./src/externalSurfaces.ts",
+    "./fields": "./src/fields.ts",
+    "./imageContentType": "./src/imageContentType.ts",
+    "./identity": "./src/identity.ts",
+    "./layers": "./src/layers.ts",
+    "./localized": "./src/localized.ts",
+    "./manifest": "./src/manifest.ts",
+    "./media": "./src/media.ts",
+    "./screens": "./src/screens.ts",
+    "./sdk": "./src/sdk.ts",
+    "./sdkAttributes": "./src/sdkAttributes.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "build": "node ../../scripts/build-publishable-package.mjs",
+    "prepublishOnly": "pnpm run build"
+  },
+  "dependencies": {
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@rheo/config": "workspace:*",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.6.3",
+    "vitest": "^3.2.6"
+  },
+  "license": "MIT",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./animations": {
+        "types": "./dist/animations.d.ts",
+        "import": "./dist/animations.js",
+        "default": "./dist/animations.js"
+      },
+      "./appIntegrations": {
+        "types": "./dist/appIntegrations.d.ts",
+        "import": "./dist/appIntegrations.js",
+        "default": "./dist/appIntegrations.js"
+      },
+      "./branding": {
+        "types": "./dist/branding.d.ts",
+        "import": "./dist/branding.js",
+        "default": "./dist/branding.js"
+      },
+      "./canvasEditorGates": {
+        "types": "./dist/canvasEditorGates.d.ts",
+        "import": "./dist/canvasEditorGates.js",
+        "default": "./dist/canvasEditorGates.js"
+      },
+      "./constants": {
+        "types": "./dist/constants/index.d.ts",
+        "import": "./dist/constants/index.js",
+        "default": "./dist/constants/index.js"
+      },
+      "./decisions": {
+        "types": "./dist/decisions.d.ts",
+        "import": "./dist/decisions.js",
+        "default": "./dist/decisions.js"
+      },
+      "./events": {
+        "types": "./dist/events.d.ts",
+        "import": "./dist/events.js",
+        "default": "./dist/events.js"
+      },
+      "./externalSurfaceIntegrations": {
+        "types": "./dist/externalSurfaceIntegrations.d.ts",
+        "import": "./dist/externalSurfaceIntegrations.js",
+        "default": "./dist/externalSurfaceIntegrations.js"
+      },
+      "./externalSurfaces": {
+        "types": "./dist/externalSurfaces.d.ts",
+        "import": "./dist/externalSurfaces.js",
+        "default": "./dist/externalSurfaces.js"
+      },
+      "./fields": {
+        "types": "./dist/fields.d.ts",
+        "import": "./dist/fields.js",
+        "default": "./dist/fields.js"
+      },
+      "./imageContentType": {
+        "types": "./dist/imageContentType.d.ts",
+        "import": "./dist/imageContentType.js",
+        "default": "./dist/imageContentType.js"
+      },
+      "./identity": {
+        "types": "./dist/identity.d.ts",
+        "import": "./dist/identity.js",
+        "default": "./dist/identity.js"
+      },
+      "./layers": {
+        "types": "./dist/layers.d.ts",
+        "import": "./dist/layers.js",
+        "default": "./dist/layers.js"
+      },
+      "./localized": {
+        "types": "./dist/localized.d.ts",
+        "import": "./dist/localized.js",
+        "default": "./dist/localized.js"
+      },
+      "./manifest": {
+        "types": "./dist/manifest.d.ts",
+        "import": "./dist/manifest.js",
+        "default": "./dist/manifest.js"
+      },
+      "./media": {
+        "types": "./dist/media.d.ts",
+        "import": "./dist/media.js",
+        "default": "./dist/media.js"
+      },
+      "./screens": {
+        "types": "./dist/screens.d.ts",
+        "import": "./dist/screens.js",
+        "default": "./dist/screens.js"
+      },
+      "./sdk": {
+        "types": "./dist/sdk.d.ts",
+        "import": "./dist/sdk.js",
+        "default": "./dist/sdk.js"
+      },
+      "./sdkAttributes": {
+        "types": "./dist/sdkAttributes.d.ts",
+        "import": "./dist/sdkAttributes.js",
+        "default": "./dist/sdkAttributes.js"
+      }
+    },
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  },
+  "homepage": "https://docs.getrheo.io/docs/developer-guide/sdk",
+  "description": "Rheo shared types, manifest schemas, and SDK HTTP contracts (transitive dependency).",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getrheo/rheo-contracts.git",
+    "directory": "packages/contracts"
+  }
+}

@@ -1,0 +1,1 @@
+export const MANIFEST_SCHEMA_VERSION = 7;

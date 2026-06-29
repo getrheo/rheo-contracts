@@ -1,22 +1,11 @@
 # rheo-contracts
 
-Shared types, manifest schemas, and SDK HTTP contracts for Rheo.
+Shared types, manifest schemas, and SDK HTTP contracts for [Rheo](https://getrheo.io).
 
-> **Status:** Scaffolded for the Rheo SDK open-source migration. Source extraction lands in Phase 3; install published packages from npm today.
+**npm:** [`@getrheo/contracts`](https://www.npmjs.com/package/@getrheo/contracts)
 
-## Packages
+```bash
+pnpm install && pnpm verify
+```
 
-- [@getrheo/contracts](https://www.npmjs.com/package/%40getrheo%2Fcontracts)
-
-## Documentation
-
-- [Developer guide](https://docs.getrheo.io/docs/developer-guide/sdk)
-- [SDK overview](https://docs.getrheo.io/docs/developer-guide/sdk)
-
-## Contributing
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md). Issues and pull requests are welcome once CI is wired.
-
-## License
-
-[MIT](./LICENSE)
+[Documentation](https://docs.getrheo.io/docs/developer-guide/sdk) · [CONTRIBUTING](./CONTRIBUTING.md) · [MIT](./LICENSE)
