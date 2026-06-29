@@ -12,7 +12,7 @@
     "build": "pnpm --filter @getrheo/contracts build",
     "check:public-exports": "node scripts/check-public-exports.mjs",
     "check:npm-publish-graph": "node scripts/check-npm-publish-graph-contracts.mjs",
-    "verify": "pnpm lint && pnpm typecheck && pnpm build && pnpm test && pnpm check:public-exports && pnpm check:npm-publish-graph"
+    "verify": "node scripts/check-no-platform-contracts.mjs && pnpm lint && pnpm typecheck && pnpm build && pnpm test && pnpm check:public-exports && pnpm check:npm-publish-graph"
   },
   "devDependencies": {
     "turbo": "^2.9.6",
