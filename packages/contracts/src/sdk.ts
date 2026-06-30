@@ -3,6 +3,11 @@ import { ResolvedAppIntegrationsSchema } from './appIntegrations';
 
 /** Default HTTPS API origin for SDK resolve/events when hosts omit `apiBaseUrl`. */
 export const RHEO_DEFAULT_SDK_API_BASE_URL = 'https://api.getrheo.io' as const;
+
+/** SDK console diagnostics verbosity — set on `RheoProvider` (`logLevel` prop). */
+export const SdkLogLevelSchema = z.enum(['silent', 'warn', 'debug']);
+export type SdkLogLevel = z.infer<typeof SdkLogLevelSchema>;
+export const DEFAULT_SDK_LOG_LEVEL: SdkLogLevel = 'silent';
 import { BrandingSchema } from './branding';
 import { FlowManifestSchema } from './manifest';
 import { SdkContextSchema, SdkIdentitySchema } from './identity';
