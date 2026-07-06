@@ -95,6 +95,7 @@ export type TextInputLayerRaw = {
    */
   children?: LayerRaw[];
   style?: CommonStyle;
+  styleBreakpoints?: CommonStyleBreakpoints;
 };
 /** Typography for min/max end labels on a scale input slider. */
 export type ScaleInputLabelStyle = {
@@ -146,6 +147,7 @@ export type ScaleInputLayerRaw = {
    */
   children?: LayerRaw[];
   style?: CommonStyle;
+  styleBreakpoints?: CommonStyleBreakpoints;
 };
 
 export type CheckboxLayerRaw = {

@@ -3,6 +3,7 @@ import type { ScreenId } from '../ids.js';
 
 import type {
   CommonStyle,
+  CommonStyleBreakpoints,
   ButtonLayoutBreakpoints,
   TextStyle,
   TextStyleBreakpoints,
@@ -79,6 +80,7 @@ export type ProgressLayerRaw = {
   trackColor?: ThemedColor;
   fillColor?: ThemedColor;
   style?: CommonStyle;
+  styleBreakpoints?: CommonStyleBreakpoints;
 };
 /**
  * Timed determinate loader (linear bar or circular ring); orthogonal to {@link ProgressLayerRaw} flow progress.
@@ -109,6 +111,7 @@ export type LoaderLayerRaw = {
   /** Horizontal alignment of the bar or ring within the layer box (default start). */
   align?: 'start' | 'center' | 'end';
   style?: CommonStyle;
+  styleBreakpoints?: CommonStyleBreakpoints;
 };
 export type LoaderOnCompleteRaw =
   | { mode: 'none' }

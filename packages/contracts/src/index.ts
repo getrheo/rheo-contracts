@@ -7,6 +7,7 @@ export * from './animations';
 export * from './screenBackground';
 export * from './screens';
 export * from './decisions';
+export * from './graphJumpTarget';
 export * from './externalSurfaces';
 export * from './sdkAttributes';
 export * from './manifest';

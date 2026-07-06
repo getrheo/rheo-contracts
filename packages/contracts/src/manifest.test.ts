@@ -33,6 +33,33 @@ describe('FlowManifestSchema', () => {
     expect(result.success).toBe(false);
   });
 
+  it('accepts choice branch targets that are decision nodes', () => {
+    const m = validFlow();
+    m.decisionNodes = [
+      {
+        id: 'dec_goal_split',
+        name: 'Goal split',
+        cases: [
+          {
+            id: 'dec_goal_split_case_0',
+            name: 'Group 1',
+            expression: { kind: 'empty' },
+            next: null,
+          },
+        ],
+        elseNext: null,
+      },
+    ];
+    const goal = m.screens.find((s) => s.id === 'scr_goal') as Screen;
+    const input = (goal.regions.body.children as StackLayer['children']).find(
+      (c) => c.kind === 'single_choice',
+    );
+    if (!input || input.kind !== 'single_choice') throw new Error('fixture changed');
+    input.branching.conditions = [{ choiceId: 'mindfulness', goTo: 'dec_goal_split' }];
+    const result = FlowManifestSchema.safeParse(m);
+    expect(result.success).toBe(true);
+  });
+
   it('rejects entry screen that does not exist', () => {
     const m = { ...validFlow(), entryScreenId: 'scr_missing' };
     const result = FlowManifestSchema.safeParse(m);

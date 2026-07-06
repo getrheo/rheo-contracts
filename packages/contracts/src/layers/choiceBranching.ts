@@ -1,5 +1,6 @@
 import { z } from 'zod';
-import { LayerIdSchema, ScreenIdSchema } from './ids.js';
+import { FlowGraphNodeJumpTargetSchema } from '../graphJumpTarget.js';
+import { LayerIdSchema } from './ids.js';
 
 export const ChoiceOptionBindingSchema = z.object({
   optionId: z.string().min(1).max(64),
@@ -9,7 +10,7 @@ export type ChoiceOptionBinding = z.infer<typeof ChoiceOptionBindingSchema>;
 
 export const BranchConditionSchema = z.object({
   choiceId: z.string().min(1),
-  goTo: ScreenIdSchema,
+  goTo: FlowGraphNodeJumpTargetSchema,
 });
 export type BranchCondition = z.infer<typeof BranchConditionSchema>;
 

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FlowGraphNodeJumpTargetSchema } from '../../graphJumpTarget.js';
 import { ScreenIdSchema } from '../ids.js';
 import { baseLayerShape } from '../base.js';
 import { layerSchemaStore } from '../layerSchemaRef.js';
@@ -71,7 +72,7 @@ export const ProgressLayerSchema = z.object({
 export const LoaderOnCompleteSchema = z.discriminatedUnion('mode', [
   z.object({ mode: z.literal('none') }),
   z.object({ mode: z.literal('next') }),
-  z.object({ mode: z.literal('screen'), screenId: ScreenIdSchema }),
+  z.object({ mode: z.literal('screen'), screenId: FlowGraphNodeJumpTargetSchema }),
 ]);
 
 /**
