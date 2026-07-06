@@ -67,7 +67,7 @@ export const CommonStyleSchema = z
     zIndex: z.number().int().min(-999).max(999).optional(),
     /** Static rotation in degrees (CSS `rotate`); not timeline animation. */
     rotate: z.number().min(-360).max(360).optional(),
-    /** Cross-axis size: `auto` (hug), `full`/`fill` (parent height), or fixed px. No fractions. */
+    /** Cross-axis size: `auto` (hug), `full`/`fill` (parent height), fractions, or fixed px. */
     height: CommonLayoutHeightSchema.optional(),
     /** Stroke thickness in px for layers that render a stroke primitive (e.g. loader ring). */
     strokeWidth: z.number().int().min(0).max(64).optional(),

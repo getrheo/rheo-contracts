@@ -123,7 +123,7 @@ export const refineManifestScreens = (
         );
         const knownOptionIds = new Set(l.optionBindings.map((b) => b.optionId));
         for (const cond of l.branching.conditions) {
-          if (!screenIds.has(cond.goTo)) {
+          if (!jumpTargets.has(cond.goTo)) {
             ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: `screen "${screen.id}" branch condition "${cond.choiceId}" -> "${cond.goTo}" not found`,
@@ -140,7 +140,7 @@ export const refineManifestScreens = (
         }
       }
       if (l.kind === 'button' && l.action.kind === 'go_to_step') {
-        if (!screenIds.has(l.action.screenId)) {
+        if (!jumpTargets.has(l.action.screenId)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: `screen "${screen.id}" button action go_to_step "${l.action.screenId}" not found`,
@@ -184,6 +184,27 @@ export const refineManifestScreens = (
               path: ['screens', screenIdx],
             });
           }
+        }
+      }
+      if (l.kind === 'loader' && l.onComplete?.mode === 'screen') {
+        if (!jumpTargets.has(l.onComplete.screenId)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `screen "${screen.id}" loader "${l.id}" onComplete targets missing destination "${l.onComplete.screenId}"`,
+            path: ['screens', screenIdx],
+          });
+        }
+      }
+      if (
+        (l.kind === 'lottie' || l.kind === 'video') &&
+        l.onComplete?.mode === 'screen'
+      ) {
+        if (!jumpTargets.has(l.onComplete.screenId)) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: `screen "${screen.id}" ${l.kind} "${l.id}" onComplete targets missing destination "${l.onComplete.screenId}"`,
+            path: ['screens', screenIdx],
+          });
         }
       }
       if (l.kind === 'back_button' && l.fallbackScreenId && !screenIds.has(l.fallbackScreenId)) {

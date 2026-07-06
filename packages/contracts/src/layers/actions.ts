@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FlowGraphNodeJumpTargetSchema } from '../graphJumpTarget.js';
 import { ScreenIdSchema } from './ids.js';
 
 /** Authorable OS-facing permission capabilities; additive via schema bumps only. */
@@ -50,11 +51,9 @@ export const OS_PERMISSION_OUTCOME_CONTINUE = 'continue' as const;
 /** Sentinel: complete the flow after this permission outcome (no next screen). */
 export const OS_PERMISSION_OUTCOME_END = 'end' as const;
 
-export const OsPermissionOutcomeBranchTargetSchema = z.union([
-  ScreenIdSchema,
+export const OsPermissionOutcomeBranchTargetSchema = FlowGraphNodeJumpTargetSchema.or(
   z.literal(OS_PERMISSION_OUTCOME_CONTINUE),
-  z.literal(OS_PERMISSION_OUTCOME_END),
-]);
+).or(z.literal(OS_PERMISSION_OUTCOME_END));
 
 export type OsPermissionOutcomeBranchTarget = z.infer<typeof OsPermissionOutcomeBranchTargetSchema>;
 
@@ -86,7 +85,7 @@ export const ButtonActionSchema = z.discriminatedUnion('kind', [
     kind: z.literal('go_back_one_screen'),
     fallbackScreenId: ScreenIdSchema.optional(),
   }),
-  z.object({ kind: z.literal('go_to_step'), screenId: ScreenIdSchema }),
+  z.object({ kind: z.literal('go_to_step'), screenId: FlowGraphNodeJumpTargetSchema }),
   z.object({
     kind: z.literal('request_os_permission'),
     permissionKey: OsPermissionKeySchema,

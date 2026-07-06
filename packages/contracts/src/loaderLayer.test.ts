@@ -21,6 +21,23 @@ describe('LoaderLayerSchema', () => {
     expect(r.success).toBe(true);
   });
 
+  it('accepts onComplete to decision and external surface targets', () => {
+    expect(
+      LoaderLayerSchema.safeParse({
+        id: 'lyr_ld6',
+        kind: 'loader',
+        onComplete: { mode: 'screen', screenId: 'dec_split' },
+      }).success,
+    ).toBe(true);
+    expect(
+      LoaderLayerSchema.safeParse({
+        id: 'lyr_ld7',
+        kind: 'loader',
+        onComplete: { mode: 'screen', screenId: 'surf_paywall' },
+      }).success,
+    ).toBe(true);
+  });
+
   it('accepts horizontal align', () => {
     const r = LoaderLayerSchema.safeParse({
       id: 'lyr_ld3',
