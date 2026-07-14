@@ -14,6 +14,7 @@ export const LAYER_KINDS = [
   'multiple_choice',
   'text_input',
   'scale_input',
+  'wheel_picker',
   'oauth_provider',
   'oauth_login',
   'email_password_auth',
@@ -30,5 +31,6 @@ export const INPUT_LAYER_KINDS = [
   'multiple_choice',
   'text_input',
   'scale_input',
+  'wheel_picker',
 ] as const;
 export type InputLayerKind = (typeof INPUT_LAYER_KINDS)[number];

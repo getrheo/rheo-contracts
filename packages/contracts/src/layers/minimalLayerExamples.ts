@@ -125,6 +125,17 @@ export const minimalLayerExamples = (): Record<LayerKind, Layer> => ({
     max: 5,
     defaultValue: 3,
   },
+  wheel_picker: {
+    id: 'lyr_wheel',
+    kind: 'wheel_picker',
+    fieldKey: 'year',
+    mode: 'date',
+    datePart: 'year',
+    minYear: 2000,
+    maxYear: 2005,
+    defaultValue: '2002',
+    placeholder: { default: 'Select' },
+  },
   oauth_provider: {
     id: 'lyr_oauth_gh',
     kind: 'oauth_provider',

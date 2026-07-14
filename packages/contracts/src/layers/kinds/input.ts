@@ -8,6 +8,7 @@ import type { LayerRaw } from '../layerRawTypes.js';
 import {
   CommonStyleSchema,
   CommonStyleBreakpointsSchema,
+  ChoiceLayoutBreakpointsSchema,
 } from '../styleCommon.js';
 import { ThemedColorSchema } from '../themedColor.js';
 import { ChoiceOptionBindingSchema, ChoiceBranchingSchema } from '../choiceBranching.js';
@@ -91,6 +92,7 @@ export const SingleChoiceLayerSchema = z.object({
   columns: z.number().int().min(1).max(12).optional(),
   style: CommonStyleSchema.optional(),
   styleBreakpoints: CommonStyleBreakpointsSchema,
+  choiceLayoutBreakpoints: ChoiceLayoutBreakpointsSchema,
 });
 
 export const MultipleChoiceLayerSchema = z.object({
@@ -109,6 +111,7 @@ export const MultipleChoiceLayerSchema = z.object({
   columns: z.number().int().min(1).max(12).optional(),
   style: CommonStyleSchema.optional(),
   styleBreakpoints: CommonStyleBreakpointsSchema,
+  choiceLayoutBreakpoints: ChoiceLayoutBreakpointsSchema,
 });
 
 /**
@@ -118,6 +121,20 @@ export const MultipleChoiceLayerSchema = z.object({
  * `discriminatedUnion` requires plain ZodObject members).
  */
 export const validateChoiceChildrenAndBindings = ChoiceChildrenAndBindingsRefinement;
+
+/** Typography for typed text inside a text-input field. */
+export const TextInputFieldStyleSchema = z
+  .object({
+    fontFamily: z.string().min(1).max(128).optional(),
+    fontSize: z.number().int().min(8).max(96).optional(),
+    fontWeight: z.number().int().min(100).max(900).optional(),
+    color: ThemedColorSchema.optional(),
+    align: z.enum(['left', 'center', 'right']).optional(),
+    lineHeight: z.number().min(0.8).max(3).optional(),
+    letterSpacing: z.number().min(-0.5).max(1).optional(),
+    opacity: z.number().min(0).max(1).optional(),
+  })
+  .partial();
 
 export const TextInputLayerSchema = z.object({
   ...baseLayerShape,
@@ -132,7 +149,10 @@ export const TextInputLayerSchema = z.object({
   children: z
     .lazy(() => z.array(lazyLayer()))
     .optional() as unknown as z.ZodType<LayerRaw[] | undefined>,
+  /** Typography for the native input's typed text. */
+  fieldStyle: TextInputFieldStyleSchema.optional(),
   style: CommonStyleSchema.optional(),
+  styleBreakpoints: CommonStyleBreakpointsSchema,
 });
 
 export const ScaleInputLabelStyleSchema = z
@@ -143,6 +163,7 @@ export const ScaleInputLabelStyleSchema = z
     color: ThemedColorSchema.optional(),
     align: z.enum(['left', 'center', 'right']).optional(),
     lineHeight: z.number().min(0.8).max(3).optional(),
+    letterSpacing: z.number().min(-0.5).max(1).optional(),
     opacity: z.number().min(0).max(1).optional(),
   })
   .partial();
@@ -170,4 +191,44 @@ export const ScaleInputLayerSchema = z.object({
     .lazy(() => z.array(lazyLayer()))
     .optional() as unknown as z.ZodType<LayerRaw[] | undefined>,
   style: CommonStyleSchema.optional(),
+  styleBreakpoints: CommonStyleBreakpointsSchema,
+});
+
+export const WheelPickerOptionSchema = z.object({
+  optionId: z.string().min(1).max(64),
+  label: LocalizedTextSchema,
+});
+
+export const WheelPickerItemStyleSchema = z
+  .object({
+    fontFamily: z.string().min(1).max(128).optional(),
+    fontSize: z.number().int().min(8).max(96).optional(),
+    fontWeight: z.number().int().min(100).max(900).optional(),
+    color: ThemedColorSchema.optional(),
+    opacity: z.number().min(0).max(1).optional(),
+  })
+  .partial();
+
+export const WheelPickerLayerSchema = z.object({
+  ...baseLayerShape,
+  kind: z.literal('wheel_picker'),
+  fieldKey: FieldKeySchema,
+  mode: z.enum(['options', 'date']).optional(),
+  options: z.array(WheelPickerOptionSchema).min(2).optional(),
+  defaultOptionId: z.string().optional(),
+  datePart: z.enum(['year', 'month', 'day']).optional(),
+  minYear: z.number().int().min(1000).max(9999).optional(),
+  maxYear: z.number().int().min(1000).max(9999).optional(),
+  defaultValue: z.string().optional(),
+  placeholder: LocalizedTextSchema.optional(),
+  itemHeight: z.number().int().min(28).max(72).optional(),
+  visibleItemCount: z.number().int().min(3).max(9).optional(),
+  selectionBackgroundColor: ThemedColorSchema.optional(),
+  itemStyle: WheelPickerItemStyleSchema.optional(),
+  selectedItemStyle: WheelPickerItemStyleSchema.optional(),
+  children: z
+    .lazy(() => z.array(lazyLayer()))
+    .optional() as unknown as z.ZodType<LayerRaw[] | undefined>,
+  style: CommonStyleSchema.optional(),
+  styleBreakpoints: CommonStyleBreakpointsSchema,
 });

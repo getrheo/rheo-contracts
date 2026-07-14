@@ -22,21 +22,33 @@ import { LoaderOnCompleteSchema } from './chrome.js';
 
 
 
-export const StackLayerSchema = z.object({
-  ...baseLayerShape,
-  kind: z.literal('stack'),
-  style: CommonStyleSchema.optional(),
-  styleBreakpoints: CommonStyleBreakpointsSchema,
-  stackLayoutBreakpoints: StackLayoutBreakpointsSchema,
-  selectedStyle: CommonStyleSchema.optional(),
-  direction: z.enum(['vertical', 'horizontal']),
-  gap: z.number().int().min(0).optional(),
-  align: z.enum(['start', 'center', 'end', 'stretch']).optional(),
-  justify: z.enum(['start', 'center', 'end']).optional(),
-  distribution: z.enum(['start', 'center', 'end', 'between', 'around']).optional(),
-  wrap: z.boolean().optional(),
-  children: z.lazy(() => z.array(lazyLayer())) as unknown as z.ZodType<LayerRaw[]>,
-});
+/** Legacy `justify` → `distribution`; dropped from the persisted schema. */
+const migrateStackJustifyForParse = (raw: unknown): unknown => {
+  if (!raw || typeof raw !== 'object') return raw;
+  const o = { ...(raw as Record<string, unknown>) };
+  if (o.justify != null && o.distribution == null) o.distribution = o.justify;
+  delete o.justify;
+  return o;
+};
+
+export const StackLayerSchema = z.preprocess(
+  migrateStackJustifyForParse,
+  z.object({
+    ...baseLayerShape,
+    kind: z.literal('stack'),
+    style: CommonStyleSchema.optional(),
+    styleBreakpoints: CommonStyleBreakpointsSchema,
+    stackLayoutBreakpoints: StackLayoutBreakpointsSchema,
+    selectedStyle: CommonStyleSchema.optional(),
+    selectedStyleBreakpoints: CommonStyleBreakpointsSchema,
+    direction: z.enum(['vertical', 'horizontal']),
+    gap: z.number().int().min(0).optional(),
+    align: z.enum(['start', 'center', 'end', 'stretch']).optional(),
+    distribution: z.enum(['start', 'center', 'end', 'between', 'around']).optional(),
+    wrap: z.boolean().optional(),
+    children: z.lazy(() => z.array(lazyLayer())) as unknown as z.ZodType<LayerRaw[]>,
+  }),
+);
 
 export const TextLayerSchema = z.object({
   ...baseLayerShape,
@@ -44,6 +56,8 @@ export const TextLayerSchema = z.object({
   text: LocalizedTextSchema,
   style: TextStyleSchema.optional(),
   styleBreakpoints: TextStyleBreakpointsSchema,
+  /** Merged on top of resolved `style` when this layer is inside a selected choice option. */
+  selectedStyle: TextStyleSchema.optional(),
 });
 
 const migrateLegacyHyperlinkForParse = (raw: unknown): unknown => {
@@ -89,6 +103,7 @@ const HyperlinkLayerSchemaInner = z
     wrap: z.boolean().optional(),
     style: CommonStyleSchema.optional(),
     styleBreakpoints: CommonStyleBreakpointsSchema,
+    hyperlinkLayoutBreakpoints: StackLayoutBreakpointsSchema,
   })
   .superRefine((data, ctx) => {
     const p = parseHyperlinkHref(data.href.trim());
@@ -113,6 +128,7 @@ export const ImageLayerSchema = z.object({
   alt: z.string().max(280).optional(),
   style: ImageStyleSchema.optional(),
   styleBreakpoints: ImageStyleBreakpointsSchema,
+  selectedStyle: ImageStyleSchema.optional(),
 });
 
 export const LottieLayerSchema = z.object({
@@ -125,6 +141,7 @@ export const LottieLayerSchema = z.object({
   onComplete: LoaderOnCompleteSchema.optional(),
   style: ImageStyleSchema.optional(),
   styleBreakpoints: ImageStyleBreakpointsSchema,
+  selectedStyle: ImageStyleSchema.optional(),
 });
 
 export const VideoLayerSchema = z.object({
@@ -138,6 +155,7 @@ export const VideoLayerSchema = z.object({
   audioEnabled: z.boolean().optional(),
   style: ImageStyleSchema.optional(),
   styleBreakpoints: ImageStyleBreakpointsSchema,
+  selectedStyle: ImageStyleSchema.optional(),
 });
 
 export const IconLayerSchema = z.object({
@@ -147,4 +165,5 @@ export const IconLayerSchema = z.object({
   iconName: z.string().min(1).max(128),
   style: IconStyleSchema.optional(),
   styleBreakpoints: IconStyleBreakpointsSchema,
+  selectedStyle: IconStyleSchema.optional(),
 });

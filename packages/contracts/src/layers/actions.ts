@@ -99,7 +99,7 @@ export const ButtonActionSchema = z.discriminatedUnion('kind', [
 ]);
 export type ButtonAction = z.infer<typeof ButtonActionSchema>;
 
-export const TEXT_INPUT_TYPES = ['plain', 'email', 'phone', 'url', 'multiline'] as const;
+export const TEXT_INPUT_TYPES = ['plain', 'email', 'phone', 'url', 'number', 'multiline'] as const;
 export type TextInputType = (typeof TEXT_INPUT_TYPES)[number];
 export const TextInputTypeSchema = z.enum(TEXT_INPUT_TYPES);
 

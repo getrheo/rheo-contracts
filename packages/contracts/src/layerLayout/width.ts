@@ -8,7 +8,10 @@ export const WIDTH_PRESETS = ['auto', 'full', ...LAYOUT_FRACTION_PRESETS] as con
 export type WidthPreset = (typeof WIDTH_PRESETS)[number];
 
 /** Width can be a named preset (`auto`, `full`, fractional) or a fixed pixel value. */
-export const WidthValueSchema = z.union([z.enum(WIDTH_PRESETS), z.number().int().min(0).max(2000)]);
+export const WidthValueSchema = z.preprocess(
+  (value) => (value === 'fill' ? 'full' : value),
+  z.union([z.enum(WIDTH_PRESETS), z.number().int().min(0).max(2000)]),
+);
 export type WidthValue = z.infer<typeof WidthValueSchema>;
 
 /** Height presets: `auto` (hug), `full`/`fill` (parent height), fractions, or fixed px. */

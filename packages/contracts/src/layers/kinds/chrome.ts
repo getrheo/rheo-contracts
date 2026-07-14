@@ -67,6 +67,7 @@ export const ProgressLayerSchema = z.object({
   trackColor: ThemedColorSchema.optional(),
   fillColor: ThemedColorSchema.optional(),
   style: CommonStyleSchema.optional(),
+  styleBreakpoints: CommonStyleBreakpointsSchema,
 });
 
 export const LoaderOnCompleteSchema = z.discriminatedUnion('mode', [
@@ -95,6 +96,7 @@ export const LoaderLayerSchema = z
     /** Horizontal alignment of the bar or ring within the layer box (default start). */
     align: z.enum(['start', 'center', 'end']).optional(),
     style: CommonStyleSchema.optional(),
+    styleBreakpoints: CommonStyleBreakpointsSchema,
   })
   .superRefine((data, ctx) => {
     if (data.variant !== 'circular') return;

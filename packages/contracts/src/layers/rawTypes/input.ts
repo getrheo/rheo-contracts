@@ -6,6 +6,7 @@ import type {
 import type {
   CommonStyle,
   CommonStyleBreakpoints,
+  ChoiceLayoutBreakpoints,
   ThemedColor,
 } from '../styleCommon.js';
 import type { TextInputType } from '../actions.js';
@@ -43,6 +44,7 @@ export type SingleChoiceLayerRaw = {
   columns?: number;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
+  choiceLayoutBreakpoints?: ChoiceLayoutBreakpoints;
 };
 export type MultipleChoiceLayerRaw = {
   id: string;
@@ -73,6 +75,7 @@ export type MultipleChoiceLayerRaw = {
   columns?: number;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
+  choiceLayoutBreakpoints?: ChoiceLayoutBreakpoints;
 };
 export type TextInputLayerRaw = {
   id: string;
@@ -94,9 +97,23 @@ export type TextInputLayerRaw = {
    * the native input field. The native field itself is rendered last.
    */
   children?: LayerRaw[];
+  /** Typography for the native input's typed text. */
+  fieldStyle?: TextInputFieldStyle;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
 };
+/** Typography for typed text inside a text-input field. */
+export type TextInputFieldStyle = {
+  fontFamily?: string;
+  fontSize?: number;
+  fontWeight?: number;
+  color?: ThemedColor;
+  align?: 'left' | 'center' | 'right';
+  lineHeight?: number;
+  letterSpacing?: number;
+  opacity?: number;
+};
+
 /** Typography for min/max end labels on a scale input slider. */
 export type ScaleInputLabelStyle = {
   fontFamily?: string;
@@ -105,6 +122,7 @@ export type ScaleInputLabelStyle = {
   color?: ThemedColor;
   align?: 'left' | 'center' | 'right';
   lineHeight?: number;
+  letterSpacing?: number;
   opacity?: number;
 };
 
@@ -145,6 +163,52 @@ export type ScaleInputLayerRaw = {
    * Optional decoration layers rendered above the slider. The slider
    * track and labels themselves are rendered by the layer.
    */
+  children?: LayerRaw[];
+  style?: CommonStyle;
+  styleBreakpoints?: CommonStyleBreakpoints;
+};
+
+/** Typography for wheel picker row labels. */
+export type WheelPickerItemStyle = {
+  fontFamily?: string;
+  fontSize?: number;
+  fontWeight?: number;
+  color?: ThemedColor;
+  opacity?: number;
+};
+
+export type WheelPickerOption = {
+  optionId: string;
+  label: z.infer<typeof LocalizedTextSchema>;
+};
+
+export type WheelPickerLayerRaw = {
+  id: string;
+  name?: string;
+  restingMotion?: RestingMotion;
+  restingMotions?: RestingMotionEntry[];
+  kind: 'wheel_picker';
+  fieldKey: string;
+  /** `options` for a custom list; `date` for year/month/day wheels. Defaults to `options`. */
+  mode?: 'options' | 'date';
+  /** Required when `mode` is `options` (or omitted). */
+  options?: WheelPickerOption[];
+  defaultOptionId?: string;
+  /** Which date column to show when `mode` is `date`. Defaults to `year`. */
+  datePart?: 'year' | 'month' | 'day';
+  minYear?: number;
+  maxYear?: number;
+  /** Initial selection (`optionId` or date value string). */
+  defaultValue?: string;
+  /** Shown in the selection band before the user scrolls (default "Select"). */
+  placeholder?: z.infer<typeof LocalizedTextSchema>;
+  /** Row height in px (default 44). */
+  itemHeight?: number;
+  /** Visible rows including the centered selection (default 5). */
+  visibleItemCount?: number;
+  selectionBackgroundColor?: ThemedColor;
+  itemStyle?: WheelPickerItemStyle;
+  selectedItemStyle?: WheelPickerItemStyle;
   children?: LayerRaw[];
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;

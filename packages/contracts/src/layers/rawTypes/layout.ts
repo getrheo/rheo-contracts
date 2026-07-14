@@ -36,10 +36,10 @@ export type StackLayerRaw = {
    * roots.
    */
   selectedStyle?: CommonStyle;
+  selectedStyleBreakpoints?: CommonStyleBreakpoints;
   direction: 'vertical' | 'horizontal';
   gap?: number;
   align?: 'start' | 'center' | 'end' | 'stretch';
-  justify?: 'start' | 'center' | 'end';
   distribution?: 'start' | 'center' | 'end' | 'between' | 'around';
   wrap?: boolean;
   children: LayerRaw[];
@@ -53,6 +53,8 @@ export type TextLayerRaw = {
   text: z.infer<typeof LocalizedTextSchema>;
   style?: TextStyle;
   styleBreakpoints?: TextStyleBreakpoints;
+  /** Merged on top of resolved `style` when inside a selected choice option. */
+  selectedStyle?: TextStyle;
 };
 export type ImageLayerRaw = {
   id: string;
@@ -64,6 +66,7 @@ export type ImageLayerRaw = {
   alt?: string;
   style?: ImageStyle;
   styleBreakpoints?: ImageStyleBreakpoints;
+  selectedStyle?: ImageStyle;
 };
 /** Lottie JSON referenced by MediaAsset on the org CDN (same pipeline as images). */
 export type LottieLayerRaw = {
@@ -83,6 +86,7 @@ export type LottieLayerRaw = {
   onComplete?: LoaderOnCompleteRaw;
   style?: ImageStyle;
   styleBreakpoints?: ImageStyleBreakpoints;
+  selectedStyle?: ImageStyle;
 };
 /** Video file referenced by MediaAsset on the org CDN (same pipeline as images / Lottie). */
 export type VideoLayerRaw = {
@@ -104,6 +108,7 @@ export type VideoLayerRaw = {
   audioEnabled?: boolean;
   style?: ImageStyle;
   styleBreakpoints?: ImageStyleBreakpoints;
+  selectedStyle?: ImageStyle;
 };
 export type IconLayerRaw = {
   id: string;
@@ -120,6 +125,7 @@ export type IconLayerRaw = {
   iconName: string;
   style?: IconStyle;
   styleBreakpoints?: IconStyleBreakpoints;
+  selectedStyle?: IconStyle;
 };
 /** Tappable region that opens a URL in the system browser (https / mailto only). Layout + hit target wrap `children`. */
 export type HyperlinkLayerRaw = {
@@ -139,4 +145,5 @@ export type HyperlinkLayerRaw = {
   wrap?: boolean;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
+  hyperlinkLayoutBreakpoints?: StackLayoutBreakpoints;
 };
