@@ -3,6 +3,7 @@ import { baseLayerShape } from '../base.js';
 import {
   CommonStyleSchema,
   CommonStyleBreakpointsSchema,
+  CarouselLayoutBreakpointsSchema,
 } from '../styleCommon.js';
 
 
@@ -51,4 +52,5 @@ export const CarouselLayerSchema = z.object({
   pageControl: CarouselPageControlSchema.optional(),
   style: CommonStyleSchema.optional(),
   styleBreakpoints: CommonStyleBreakpointsSchema,
+  carouselLayoutBreakpoints: CarouselLayoutBreakpointsSchema,
 });

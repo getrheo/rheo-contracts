@@ -31,6 +31,7 @@ import {
   MultipleChoiceLayerSchema,
   TextInputLayerSchema,
   ScaleInputLayerSchema,
+  WheelPickerLayerSchema,
 } from './kinds/input.js';
 import { CarouselLayerSchema } from './kinds/carousel.js';
 
@@ -53,6 +54,7 @@ layerSchemaStore.schema = z.lazy(() =>
     MultipleChoiceLayerSchema,
     TextInputLayerSchema,
     ScaleInputLayerSchema,
+    WheelPickerLayerSchema,
     OAuthLoginLayerSchema,
     OAuthProviderPresetLayerSchema,
     OAuthProviderCustomLayerSchema,

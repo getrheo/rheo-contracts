@@ -19,6 +19,7 @@ import type {
   MultipleChoiceLayerRaw,
   TextInputLayerRaw,
   ScaleInputLayerRaw,
+  WheelPickerLayerRaw,
   CheckboxLayerRaw,
 } from './input.js';
 import type {
@@ -47,6 +48,7 @@ export type LayerRaw =
   | MultipleChoiceLayerRaw
   | TextInputLayerRaw
   | ScaleInputLayerRaw
+  | WheelPickerLayerRaw
   | OAuthProviderLayerRaw
   | OAuthLoginLayerRaw
   | EmailPasswordFieldLayerRaw

@@ -59,6 +59,8 @@ export const CommonStyleSchema = z
     border: BorderSchema.optional(),
     shadow: DropShadowSchema.optional(),
     opacity: z.number().min(0).max(1).optional(),
+    /** Multiplier (0–1) applied to the resolved background color alpha only; children stay fully opaque unless `opacity` is set. */
+    backgroundOpacity: z.number().min(0).max(1).optional(),
     width: WidthValueSchema.optional(),
     /** Omit for normal flow; `'absolute'` removes the layer from flex flow (non-root only). */
     position: z.literal('absolute').optional(),
@@ -69,6 +71,11 @@ export const CommonStyleSchema = z
     rotate: z.number().min(-360).max(360).optional(),
     /** Cross-axis size: `auto` (hug), `full`/`fill` (parent height), fractions, or fixed px. */
     height: CommonLayoutHeightSchema.optional(),
+    /** Optional size clamps (px); applied on the flex shell / wrapper like width/height. */
+    minWidth: NonNegativePxSchema.max(2000).optional(),
+    maxWidth: NonNegativePxSchema.max(2000).optional(),
+    minHeight: NonNegativePxSchema.max(2000).optional(),
+    maxHeight: NonNegativePxSchema.max(2000).optional(),
     /** Stroke thickness in px for layers that render a stroke primitive (e.g. loader ring). */
     strokeWidth: z.number().int().min(0).max(64).optional(),
   })
@@ -85,9 +92,10 @@ export const TextStyleSchema = CommonStyleSchema.extend({
   fontWeight: z.number().int().min(100).max(900).optional(),
   color: ThemedColorSchema.optional(),
   align: z.enum(['left', 'center', 'right']).optional(),
+  /** Unitless line-height multiplier (CSS `line-height` without units). */
   lineHeight: z.number().min(0.8).max(3).optional(),
-  /** Multiplier (0–1) applied to the resolved background color alpha only; text stays fully opaque unless `opacity` is set. */
-  backgroundOpacity: z.number().min(0).max(1).optional(),
+  /** Extra spacing between characters as a multiple of `fontSize` (CSS `em`; negative values tighten). */
+  letterSpacing: z.number().min(-0.5).max(1).optional(),
 });
 export type TextStyle = z.infer<typeof TextStyleSchema>;
 
@@ -217,3 +225,62 @@ export const ButtonLayoutBreakpointsSchema = z
   .partial()
   .optional();
 export type ButtonLayoutBreakpoints = z.infer<typeof ButtonLayoutBreakpointsSchema>;
+
+const AuthLayoutBreakpointPatchSchema = z
+  .object({
+    gap: NonNegativePxSchema.optional(),
+    align: z.enum(['start', 'center', 'end', 'stretch']).optional(),
+  })
+  .partial();
+
+export const AuthLayoutBreakpointsSchema = z
+  .object({
+    sm: AuthLayoutBreakpointPatchSchema.optional(),
+    md: AuthLayoutBreakpointPatchSchema.optional(),
+    lg: AuthLayoutBreakpointPatchSchema.optional(),
+    xl: AuthLayoutBreakpointPatchSchema.optional(),
+    '2xl': AuthLayoutBreakpointPatchSchema.optional(),
+  })
+  .partial()
+  .optional();
+export type AuthLayoutBreakpoints = z.infer<typeof AuthLayoutBreakpointsSchema>;
+
+const ChoiceLayoutBreakpointPatchSchema = z
+  .object({
+    direction: z.enum(['vertical', 'horizontal']).optional(),
+    gap: NonNegativePxSchema.optional(),
+    columns: z.number().int().min(1).max(6).optional(),
+  })
+  .partial();
+
+export const ChoiceLayoutBreakpointsSchema = z
+  .object({
+    sm: ChoiceLayoutBreakpointPatchSchema.optional(),
+    md: ChoiceLayoutBreakpointPatchSchema.optional(),
+    lg: ChoiceLayoutBreakpointPatchSchema.optional(),
+    xl: ChoiceLayoutBreakpointPatchSchema.optional(),
+    '2xl': ChoiceLayoutBreakpointPatchSchema.optional(),
+  })
+  .partial()
+  .optional();
+export type ChoiceLayoutBreakpoints = z.infer<typeof ChoiceLayoutBreakpointsSchema>;
+
+const CarouselLayoutBreakpointPatchSchema = z
+  .object({
+    pageAlignment: z.enum(['top', 'center', 'bottom']).optional(),
+    pageSpacing: NonNegativePxSchema.optional(),
+    pagePeek: NonNegativePxSchema.optional(),
+  })
+  .partial();
+
+export const CarouselLayoutBreakpointsSchema = z
+  .object({
+    sm: CarouselLayoutBreakpointPatchSchema.optional(),
+    md: CarouselLayoutBreakpointPatchSchema.optional(),
+    lg: CarouselLayoutBreakpointPatchSchema.optional(),
+    xl: CarouselLayoutBreakpointPatchSchema.optional(),
+    '2xl': CarouselLayoutBreakpointPatchSchema.optional(),
+  })
+  .partial()
+  .optional();
+export type CarouselLayoutBreakpoints = z.infer<typeof CarouselLayoutBreakpointsSchema>;

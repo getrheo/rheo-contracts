@@ -65,4 +65,16 @@ describe('LoaderLayerSchema', () => {
     });
     expect(r.success).toBe(false);
   });
+
+  it('accepts styleBreakpoints without stripping', () => {
+    const r = LoaderLayerSchema.safeParse({
+      id: 'lyr_ld_bp',
+      kind: 'loader',
+      styleBreakpoints: { md: { padding: { t: 8, r: 8, b: 8, l: 8 } } },
+    });
+    expect(r.success).toBe(true);
+    if (r.success) {
+      expect(r.data.styleBreakpoints?.md?.padding).toEqual({ t: 8, r: 8, b: 8, l: 8 });
+    }
+  });
 });

@@ -1,6 +1,7 @@
 import type {
   CommonStyle,
   CommonStyleBreakpoints,
+  CarouselLayoutBreakpoints,
   Padding,
   Border,
   DropShadow,
@@ -66,4 +67,5 @@ export type CarouselLayerRaw = {
   pageControl?: CarouselPageControl;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
+  carouselLayoutBreakpoints?: CarouselLayoutBreakpoints;
 };

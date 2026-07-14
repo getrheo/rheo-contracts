@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ResolvedAppIntegrationsSchema } from './appIntegrations';
+import { ResolvedAppIntegrationsSchema, type ResolvedAppIntegrations } from './appIntegrations';
 
 /** Default HTTPS API origin for SDK resolve/events when hosts omit `apiBaseUrl`. */
 export const RHEO_DEFAULT_SDK_API_BASE_URL = 'https://api.getrheo.io' as const;
@@ -8,9 +8,9 @@ export const RHEO_DEFAULT_SDK_API_BASE_URL = 'https://api.getrheo.io' as const;
 export const SdkLogLevelSchema = z.enum(['silent', 'warn', 'debug']);
 export type SdkLogLevel = z.infer<typeof SdkLogLevelSchema>;
 export const DEFAULT_SDK_LOG_LEVEL: SdkLogLevel = 'silent';
-import { BrandingSchema } from './branding';
-import { FlowManifestSchema } from './manifest';
-import { SdkContextSchema, SdkIdentitySchema } from './identity';
+import { BrandingSchema, type Branding } from './branding';
+import { FlowManifestSchema, type FlowManifest } from './manifest';
+import { SdkContextSchema, SdkIdentitySchema, type SdkIdentity } from './identity';
 
 /**
  * Resolve request is app-scoped: the publishable key identifies the app and
@@ -23,7 +23,27 @@ export const SdkResolveRequestSchema = z.object({
 });
 export type SdkResolveRequest = z.infer<typeof SdkResolveRequestSchema>;
 
-export const SdkResolveResponseSchema = z.object({
+export type SdkResolveResponse = {
+  flowId: string;
+  versionId: string;
+  versionNumber: number;
+  assignmentVersion: number;
+  environment: 'test' | 'live';
+  channelId: string;
+  experimentId: string | null;
+  variantId: string | null;
+  manifest: FlowManifest;
+  mediaMap: Record<string, string>;
+  branding?: Branding;
+  features?: { attribution: boolean };
+  integrations: ResolvedAppIntegrations;
+};
+
+/**
+ * Explicit `ZodType<…>` annotations keep DTS emit under TS7056 as layer/manifest
+ * unions grow (layout breakpoints).
+ */
+export const SdkResolveResponseSchema: z.ZodType<SdkResolveResponse> = z.object({
   flowId: z.string().uuid(),
   versionId: z.string().uuid(),
   versionNumber: z.number().int().positive(),
@@ -47,8 +67,7 @@ export const SdkResolveResponseSchema = z.object({
     .optional(),
   /** Per-app integration toggles from the dashboard; SDK should respect these after resolve. */
   integrations: ResolvedAppIntegrationsSchema,
-});
-export type SdkResolveResponse = z.infer<typeof SdkResolveResponseSchema>;
+}) as z.ZodType<SdkResolveResponse>;
 
 /**
  * Batch resolve response for `POST /v1/sdk/resolve-all`. Returns one entry per
@@ -56,17 +75,34 @@ export type SdkResolveResponse = z.infer<typeof SdkResolveResponseSchema>;
  * same shape as a single `/resolve`, so SDKs can drop them straight into the
  * per-channel manifest cache (channels that fail to resolve are omitted).
  */
-export const SdkResolveAllResponseSchema = z.object({
+export type SdkResolveAllResponse = {
+  channels: SdkResolveResponse[];
+};
+
+export const SdkResolveAllResponseSchema: z.ZodType<SdkResolveAllResponse> = z.object({
   channels: z.array(SdkResolveResponseSchema),
-});
-export type SdkResolveAllResponse = z.infer<typeof SdkResolveAllResponseSchema>;
+}) as z.ZodType<SdkResolveAllResponse>;
 
 /** Resolve metadata without manifest/media (for tooling; terminal callbacks use {@link FlowTerminalCorrelationSchema}). */
-export const SdkResolveAssignmentSchema = SdkResolveResponseSchema.omit({
-  manifest: true,
-  mediaMap: true,
-});
-export type SdkResolveAssignment = z.infer<typeof SdkResolveAssignmentSchema>;
+export type SdkResolveAssignment = Omit<SdkResolveResponse, 'manifest' | 'mediaMap'>;
+
+export const SdkResolveAssignmentSchema: z.ZodType<SdkResolveAssignment> = z.object({
+  flowId: z.string().uuid(),
+  versionId: z.string().uuid(),
+  versionNumber: z.number().int().positive(),
+  assignmentVersion: z.number().int().nonnegative(),
+  environment: z.enum(['test', 'live']),
+  channelId: z.string(),
+  experimentId: z.string().uuid().nullable(),
+  variantId: z.string().nullable(),
+  branding: BrandingSchema.optional(),
+  features: z
+    .object({
+      attribution: z.boolean(),
+    })
+    .optional(),
+  integrations: ResolvedAppIntegrationsSchema,
+}) as z.ZodType<SdkResolveAssignment>;
 
 /** Join keys for correlating a terminal event with analytics / dashboard (no integration flags). */
 export const FlowTerminalCorrelationSchema = z.object({
@@ -94,7 +130,21 @@ export type FlowTerminalDevice = z.infer<typeof FlowTerminalDeviceSchema>;
  * Consumer-oriented snapshot for `onFlowCompleted` / `onFlowAbandoned`: small JSON
  * suitable for POSTing to your API, CRM, or LLM prompts (`schemaVersion` bumps on breaking changes).
  */
-export const FlowTerminalSnapshotSchema = z.object({
+export type FlowTerminalSnapshot = {
+  schemaVersion: 1;
+  terminal: 'completed' | 'abandoned';
+  occurredAt: string | null;
+  correlation: FlowTerminalCorrelation;
+  subject: SdkIdentity;
+  device: FlowTerminalDevice;
+  answers: Record<string, unknown>;
+  traits: Record<string, unknown>;
+  path?: string[];
+  answersDetail?: Record<string, unknown>;
+  manifest?: FlowManifest;
+};
+
+export const FlowTerminalSnapshotSchema: z.ZodType<FlowTerminalSnapshot> = z.object({
   schemaVersion: z.literal(1),
   terminal: z.enum(['completed', 'abandoned']),
   /** When the flow reached a terminal status (`FlowState.completedAt`). */
@@ -116,11 +166,11 @@ export const FlowTerminalSnapshotSchema = z.object({
   /** Raw step responses (minus auth keys) when `includeAnswerDetailInTerminalPayload` is true. */
   answersDetail: z.record(z.string(), z.unknown()).optional(),
   manifest: FlowManifestSchema.optional(),
-});
-export type FlowTerminalSnapshot = z.infer<typeof FlowTerminalSnapshotSchema>;
+}) as z.ZodType<FlowTerminalSnapshot>;
 
 /** @deprecated Use {@link FlowTerminalSnapshotSchema}. */
-export const SdkCompletionPayloadSchema = FlowTerminalSnapshotSchema;
+export const SdkCompletionPayloadSchema: z.ZodType<FlowTerminalSnapshot> =
+  FlowTerminalSnapshotSchema;
 
 /** @deprecated Use {@link FlowTerminalSnapshot} / {@link FlowTerminalSnapshotSchema}. */
 export type SdkCompletionPayload = FlowTerminalSnapshot;

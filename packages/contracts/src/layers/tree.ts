@@ -44,6 +44,7 @@ export const layerHasAbsolutePositionAuthored = (layer: LayerRaw): boolean => {
       return commonStyleHasAbsolutePosition(layer.style, undefined);
     case 'text_input':
     case 'scale_input':
+    case 'wheel_picker':
       return commonStyleHasAbsolutePosition(layer.style, undefined);
     case 'oauth_provider':
       if (layer.variant === 'preset') {

@@ -4,6 +4,7 @@ import { baseLayerShape } from '../../base.js';
 import {
   CommonStyleSchema,
   CommonStyleBreakpointsSchema,
+  AuthLayoutBreakpointsSchema,
   ICON_FAMILIES,
 } from '../../styleCommon.js';
 import { OAUTH_LOGIN_PRESETS } from '../../oauthConstants.js';
@@ -115,6 +116,7 @@ const OAuthLoginLayerSchemaValidated = z.object({
   ),
   gap: z.number().int().min(0).optional(),
   align: z.enum(['start', 'center', 'end', 'stretch']).optional(),
+  authLayoutBreakpoints: AuthLayoutBreakpointsSchema,
   style: CommonStyleSchema.optional(),
   styleBreakpoints: CommonStyleBreakpointsSchema,
 });

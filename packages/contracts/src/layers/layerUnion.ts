@@ -16,6 +16,7 @@ import type {
   MultipleChoiceLayerRaw,
   TextInputLayerRaw,
   ScaleInputLayerRaw,
+  WheelPickerLayerRaw,
   OAuthLoginLayerRaw,
   EmailPasswordAuthLayerRaw,
   EmailPasswordFieldLayerRaw,
@@ -46,6 +47,7 @@ export type SingleChoiceLayer = SingleChoiceLayerRaw;
 export type MultipleChoiceLayer = MultipleChoiceLayerRaw;
 export type TextInputLayer = TextInputLayerRaw;
 export type ScaleInputLayer = ScaleInputLayerRaw;
+export type WheelPickerLayer = WheelPickerLayerRaw;
 export type OAuthLoginLayer = OAuthLoginLayerRaw;
 export type EmailPasswordAuthLayer = EmailPasswordAuthLayerRaw;
 export type EmailPasswordFieldLayer = EmailPasswordFieldLayerRaw;
@@ -55,13 +57,14 @@ export type OAuthProviderCustomLayer = OAuthProviderCustomLayerRaw;
 export type OAuthProviderLayer = OAuthProviderLayerRaw;
 export type CarouselLayer = CarouselLayerRaw;
 export type HyperlinkLayer = HyperlinkLayerRaw;
-export type InputLayer = SingleChoiceLayer | MultipleChoiceLayer | TextInputLayer | ScaleInputLayer;
+export type InputLayer = SingleChoiceLayer | MultipleChoiceLayer | TextInputLayer | ScaleInputLayer | WheelPickerLayer;
 
 export const isInputLayer = (l: Layer): l is InputLayer =>
   l.kind === 'single_choice' ||
   l.kind === 'multiple_choice' ||
   l.kind === 'text_input' ||
-  l.kind === 'scale_input';
+  l.kind === 'scale_input' ||
+  l.kind === 'wheel_picker';
 
 export const isParentLayer = (
   l: Layer,
@@ -75,6 +78,7 @@ export const isParentLayer = (
   | MultipleChoiceLayer
   | TextInputLayer
   | ScaleInputLayer
+  | WheelPickerLayer
   | OAuthLoginLayer
   | OAuthProviderCustomLayer
   | EmailPasswordAuthLayer
@@ -89,6 +93,7 @@ export const isParentLayer = (
   l.kind === 'multiple_choice' ||
   l.kind === 'text_input' ||
   l.kind === 'scale_input' ||
+  l.kind === 'wheel_picker' ||
   l.kind === 'oauth_login' ||
   (l.kind === 'oauth_provider' && l.variant === 'custom') ||
   l.kind === 'email_password_auth' ||

@@ -12,6 +12,7 @@ import {
   ButtonStyleBreakpointsSchema,
   ButtonLayoutBreakpointsSchema,
   ButtonLayerVariantSchema,
+  AuthLayoutBreakpointsSchema,
 } from '../../styleCommon.js';
 import { EMAIL_PASSWORD_AUTH_MODES, EMAIL_PASSWORD_SLOTS } from '../../oauthConstants.js';
 import type { EmailPasswordAuthMode, EmailPasswordSlot } from '../../oauthConstants.js';
@@ -180,6 +181,7 @@ const EmailPasswordAuthLayerSchemaValidated = z
     ),
     gap: z.number().int().min(0).optional(),
     align: z.enum(['start', 'center', 'end', 'stretch']).optional(),
+    authLayoutBreakpoints: AuthLayoutBreakpointsSchema,
     style: CommonStyleSchema.optional(),
     styleBreakpoints: CommonStyleBreakpointsSchema,
   })

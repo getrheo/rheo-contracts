@@ -14,6 +14,7 @@ import type {
   ButtonStyle,
   ButtonStyleBreakpoints,
   ButtonLayerVariant,
+  AuthLayoutBreakpoints,
 } from '../styleCommon.js';
 import type { RestingMotion, RestingMotionEntry } from '../restingMotion.js';
 import type { LayerRaw } from './union.js';
@@ -67,6 +68,7 @@ export type OAuthLoginLayerRaw = {
   children: OAuthProviderLayerRaw[];
   gap?: number;
   align?: 'start' | 'center' | 'end' | 'stretch';
+  authLayoutBreakpoints?: AuthLayoutBreakpoints;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
 };
@@ -122,6 +124,7 @@ export type EmailPasswordAuthLayerRaw = {
   children: Array<EmailPasswordFieldLayerRaw | EmailPasswordSubmitLayerRaw>;
   gap?: number;
   align?: 'start' | 'center' | 'end' | 'stretch';
+  authLayoutBreakpoints?: AuthLayoutBreakpoints;
   style?: CommonStyle;
   styleBreakpoints?: CommonStyleBreakpoints;
 };
