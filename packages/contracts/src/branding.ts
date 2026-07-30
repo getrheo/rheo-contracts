@@ -36,7 +36,10 @@ export const FontStyleSchema = z.object({
   label: z.string().max(40).optional(),
   /** MediaAsset id of the uploaded font file. */
   mediaAssetId: z.string().uuid().optional(),
-  /** Public URL of the uploaded font file (denormalized for SDK consumption). */
+  /**
+   * Access URL for the uploaded font file (denormalized for SDK consumption).
+   * Freshly signed on SDK resolve and dashboard app reads; do not persist as long-lived.
+   */
   url: z.string().url().optional(),
   /** Original filename — useful for display. */
   filename: z.string().max(200).optional(),

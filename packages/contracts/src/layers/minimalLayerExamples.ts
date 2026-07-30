@@ -230,6 +230,53 @@ export const minimalLayerExamples = (): Record<LayerKind, Layer> => ({
     kind: 'checkbox',
     fieldKey: 'agree',
   },
+  conditional: {
+    id: 'lyr_cond',
+    kind: 'conditional',
+    cases: [
+      {
+        id: 'case_ios',
+        name: 'iOS',
+        expression: {
+          kind: 'predicate',
+          variable: { kind: 'builtin', name: 'platform' },
+          predicate: { type: 'string', pred: { op: 'eq', value: 'ios' } },
+        },
+        rootLayerId: 'lyr_cond_case_ios',
+      },
+    ],
+    elseRootLayerId: 'lyr_cond_else',
+    children: [
+      {
+        id: 'lyr_cond_case_ios',
+        kind: 'stack',
+        direction: 'vertical',
+        gap: 8,
+        children: [
+          {
+            id: 'lyr_cond_case_ios_t',
+            kind: 'text',
+            text: { default: 'On iOS' },
+            style: { color: DEFAULT_THEMED_FOREGROUND },
+          },
+        ],
+      },
+      {
+        id: 'lyr_cond_else',
+        kind: 'stack',
+        direction: 'vertical',
+        gap: 8,
+        children: [
+          {
+            id: 'lyr_cond_else_t',
+            kind: 'text',
+            text: { default: 'Everyone else' },
+            style: { color: DEFAULT_THEMED_FOREGROUND },
+          },
+        ],
+      },
+    ],
+  },
 });
 
 /** Kinds that may appear as the sole layer on a screen body (manifest rules). */

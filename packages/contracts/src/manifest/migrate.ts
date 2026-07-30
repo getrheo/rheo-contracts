@@ -72,6 +72,8 @@ const migrateLayerInPlace = (layer: unknown): void => {
     for (const c of l.children) migrateLayerInPlace(c);
   } else if (l.kind === 'carousel' && Array.isArray(l.slides)) {
     for (const s of l.slides) migrateLayerInPlace(s);
+  } else if (l.kind === 'conditional' && Array.isArray(l.children)) {
+    for (const c of l.children) migrateLayerInPlace(c);
   } else if (l.kind === 'button' && Array.isArray(l.children)) {
     for (const c of l.children) migrateLayerInPlace(c);
   } else if (l.kind === 'back_button' && Array.isArray(l.children)) {

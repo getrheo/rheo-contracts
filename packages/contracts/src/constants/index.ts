@@ -74,6 +74,8 @@ export const EVENT_NAMES = [
 export type EventName = (typeof EVENT_NAMES)[number];
 
 export const PUBLISHABLE_KEY_PREFIX = 'ob_pk_';
+/** Workspace-scoped dashboard CLI / automation keys (secret; hash at rest). */
+export const WORKSPACE_API_KEY_PREFIX = 'rheo_wk_';
 export const API_VERSION = 'v1';
 
 export const DEFAULT_LOCALE = 'en';

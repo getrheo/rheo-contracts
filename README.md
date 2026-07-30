@@ -8,7 +8,7 @@ Public home for [`@getrheo/contracts`](https://www.npmjs.com/package/%40getrheo%
 | --- | --- |
 | [`@getrheo/contracts`](https://www.npmjs.com/package/%40getrheo%2Fcontracts) | SDK-visible contracts (no dashboard or platform-only types) |
 
-**Current release line:** `2.3.0.x` (publish on git tag `v2.3.0`).
+**Current release line:** `2.4.0.x` (publish on git tag `v2.4.0`).
 
 **Compatibility:** `@getrheo/contracts@2.x` aligns with [`rheo-js`](https://github.com/getrheo/rheo-js), [`rheo-react-native`](https://github.com/getrheo/rheo-react-native), and [`@getrheo/rheo-skill`](https://www.npmjs.com/package/%40getrheo%2Frheo-skill) on matching major.minor.
 

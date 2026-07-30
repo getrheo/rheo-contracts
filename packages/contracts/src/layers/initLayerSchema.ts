@@ -34,6 +34,7 @@ import {
   WheelPickerLayerSchema,
 } from './kinds/input.js';
 import { CarouselLayerSchema } from './kinds/carousel.js';
+import { ConditionalLayerSchema } from './kinds/conditional.js';
 
 layerSchemaStore.schema = z.lazy(() =>
   z.union([
@@ -62,6 +63,7 @@ layerSchemaStore.schema = z.lazy(() =>
     EmailPasswordFieldLayerSchema,
     EmailPasswordSubmitLayerSchema,
     CarouselLayerSchema,
+    ConditionalLayerSchema,
   ]),
 ) as unknown as z.ZodType<LayerRaw>;
 

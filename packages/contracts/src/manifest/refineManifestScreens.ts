@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import {
+  conditionalFieldScopeViolations,
+  maxMatchesOnScreenActivePath,
+} from '../conditionalScope.js';
+import { collectDecisionSdkKeys } from '../decisionExpr.js';
+import { isReservedSdkKey } from '../sdkAttributes.js';
 import { walkScreenLayers, walkScreenLayersWithLayoutContext } from '../screens.js';
 import type { Screen } from '../screens.js';
 import {
@@ -7,6 +13,7 @@ import {
   OS_PERMISSION_OUTCOME_CONTINUE,
   OS_PERMISSION_OUTCOME_END,
   validateChoiceChildrenAndBindings,
+  validateConditionalCasesAndBindings,
   permissionCaptureFieldKey,
 } from '../layers.js';
 import type { Layer } from '../layers.js';
@@ -20,8 +27,8 @@ export const refineManifestScreens = (
   allFieldKeys: Map<string, string>,
 ): void => {
   const layerIds = new Set<string>();
+  const sdkAllow = new Set(manifest.sdkAttributeKeys);
   manifest.screens.forEach((screen, screenIdx) => {
-    let inputCount = 0;
     const layerIdsForScreen = new Set<string>();
     walkScreenLayers(screen as unknown as Screen, (l: Layer) => {
       layerIdsForScreen.add(l.id);
@@ -36,7 +43,6 @@ export const refineManifestScreens = (
       }
       layerIds.add(l.id);
       if (isInputLayer(l)) {
-        inputCount += 1;
         if (allFieldKeys.has(l.fieldKey)) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -61,10 +67,20 @@ export const refineManifestScreens = (
         if (!allFieldKeys.has(fk)) allFieldKeys.set(fk, screen.id);
       }
     });
-    if (inputCount > 1) {
+    // Conditional branches are mutually exclusive, so count inputs per active path.
+    const inputsOnPath = maxMatchesOnScreenActivePath(screen as unknown as Screen, isInputLayer);
+    if (inputsOnPath > 1) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: `screen "${screen.id}" has ${inputCount} input layers (max 1 allowed)`,
+        message: `screen "${screen.id}" can show ${inputsOnPath} input layers at once (max 1 allowed)`,
+        path: ['screens', screenIdx, 'regions'],
+      });
+    }
+
+    for (const v of conditionalFieldScopeViolations(screen as unknown as Screen)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `conditional "${v.conditionalId}" case "${v.caseId}" reads fieldKey "${v.fieldKey}" that is answered at or after it on the same screen`,
         path: ['screens', screenIdx, 'regions'],
       });
     }
@@ -136,6 +152,21 @@ export const refineManifestScreens = (
               message: `screen "${screen.id}" branch condition references unknown choice "${cond.choiceId}"`,
               path: ['screens', screenIdx],
             });
+          }
+        }
+      }
+      if (l.kind === 'conditional') {
+        validateConditionalCasesAndBindings(l, ctx);
+        for (const c of l.cases) {
+          for (const sk of collectDecisionSdkKeys(c.expression)) {
+            if (isReservedSdkKey(sk)) continue;
+            if (!sdkAllow.has(sk)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: `conditional "${l.id}" case "${c.id}" references sdk key "${sk}" not in sdkAttributeKeys`,
+                path: ['screens', screenIdx],
+              });
+            }
           }
         }
       }

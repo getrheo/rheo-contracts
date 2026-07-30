@@ -131,6 +131,8 @@ export const walkScreenLayersWithLayoutContext = (
       for (const c of l.children) visit(c, childCtx());
     } else if (l.kind === 'carousel') {
       for (const s of l.slides) visit(s, childCtx());
+    } else if (l.kind === 'conditional') {
+      for (const c of l.children) visit(c, childCtx());
     } else if (l.kind === 'button' || l.kind === 'back_button') {
       for (const c of l.children) visit(c, childCtx());
     } else if (l.kind === 'hyperlink') {
@@ -170,6 +172,7 @@ export const walkScreenLayers = (screen: Screen, fn: (l: Layer) => void): void =
     fn(l);
     if (l.kind === 'stack') l.children.forEach(visit);
     else if (l.kind === 'carousel') l.slides.forEach(visit);
+    else if (l.kind === 'conditional') l.children.forEach(visit);
     else if (l.kind === 'button') l.children.forEach(visit);
     else if (l.kind === 'back_button') l.children.forEach(visit);
     else if (l.kind === 'hyperlink') l.children.forEach(visit);
