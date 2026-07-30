@@ -1,6 +1,8 @@
 /** Side-effect: assign LayerSchema before kind schemas are used at runtime. */
 import './initLayerSchema.js';
 
+/** Conditional cases carry `DecisionExpr`; re-exported so layer consumers can type cases. */
+export * from '../decisionExpr.js';
 export * from './ids.js';
 export * from './themedColor.js';
 export * from './styleCommon.js';
@@ -18,6 +20,7 @@ export * from './kinds/auth.js';
 export * from './kinds/chrome.js';
 export * from './kinds/input.js';
 export * from './kinds/carousel.js';
+export * from './kinds/conditional.js';
 export { LayerSchema } from './initLayerSchema.js';
 export * from './layerUnion.js';
 export * from './minimalLayerExamples.js';

@@ -76,6 +76,11 @@ export const APP_REVIEW_OUTCOMES = ['not_shown', 'dismissed'] as const;
 export type AppReviewOutcome = (typeof APP_REVIEW_OUTCOMES)[number];
 export const AppReviewOutcomeSchema = z.enum(APP_REVIEW_OUTCOMES);
 
+/** Behavior when `advance_carousel` fires while the target is already on its last slide. */
+export const CAROUSEL_ADVANCE_ON_LAST = ['noop', 'complete'] as const;
+export type CarouselAdvanceOnLast = (typeof CAROUSEL_ADVANCE_ON_LAST)[number];
+export const CarouselAdvanceOnLastSchema = z.enum(CAROUSEL_ADVANCE_ON_LAST);
+
 export const ButtonActionSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('none') }),
   z.object({ kind: z.literal('continue') }),
@@ -96,6 +101,11 @@ export const ButtonActionSchema = z.discriminatedUnion('kind', [
     targetLayerIds: z.array(z.string().min(1)).min(1),
   }),
   z.object({ kind: z.literal('request_app_review') }),
+  z.object({
+    kind: z.literal('advance_carousel'),
+    targetLayerId: z.string().min(1),
+    onLast: CarouselAdvanceOnLastSchema.optional(),
+  }),
 ]);
 export type ButtonAction = z.infer<typeof ButtonActionSchema>;
 

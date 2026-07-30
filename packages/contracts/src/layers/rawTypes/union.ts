@@ -30,6 +30,7 @@ import type {
   EmailPasswordAuthLayerRaw,
 } from './auth.js';
 import type { CarouselLayerRaw } from './carousel.js';
+import type { ConditionalLayerRaw } from './conditional.js';
 
 export type LayerRaw =
   | StackLayerRaw
@@ -55,4 +56,5 @@ export type LayerRaw =
   | EmailPasswordSubmitLayerRaw
   | EmailPasswordAuthLayerRaw
   | CarouselLayerRaw
+  | ConditionalLayerRaw
   | HyperlinkLayerRaw;

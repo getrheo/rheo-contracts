@@ -23,6 +23,7 @@ export const LAYER_KINDS = [
   'carousel',
   'hyperlink',
   'checkbox',
+  'conditional',
 ] as const;
 export type LayerKind = (typeof LAYER_KINDS)[number];
 

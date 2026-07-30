@@ -25,6 +25,8 @@ import type {
   OAuthProviderCustomLayerRaw,
   OAuthProviderLayerRaw,
   CarouselLayerRaw,
+  ConditionalLayerRaw,
+  ConditionalCaseRaw,
   HyperlinkLayerRaw,
   LayerRaw,
 } from './layerRawTypes.js';
@@ -56,6 +58,8 @@ export type OAuthProviderPresetLayer = OAuthProviderPresetLayerRaw;
 export type OAuthProviderCustomLayer = OAuthProviderCustomLayerRaw;
 export type OAuthProviderLayer = OAuthProviderLayerRaw;
 export type CarouselLayer = CarouselLayerRaw;
+export type ConditionalLayer = ConditionalLayerRaw;
+export type ConditionalLayerCase = ConditionalCaseRaw;
 export type HyperlinkLayer = HyperlinkLayerRaw;
 export type InputLayer = SingleChoiceLayer | MultipleChoiceLayer | TextInputLayer | ScaleInputLayer | WheelPickerLayer;
 
@@ -71,6 +75,7 @@ export const isParentLayer = (
 ): l is
   | StackLayer
   | CarouselLayer
+  | ConditionalLayer
   | ButtonLayer
   | BackButtonLayer
   | HyperlinkLayer
@@ -86,6 +91,7 @@ export const isParentLayer = (
   | EmailPasswordSubmitLayer =>
   l.kind === 'stack' ||
   l.kind === 'carousel' ||
+  l.kind === 'conditional' ||
   l.kind === 'button' ||
   l.kind === 'back_button' ||
   l.kind === 'hyperlink' ||

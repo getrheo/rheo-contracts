@@ -2,6 +2,18 @@
 
 All notable changes to `@getrheo/contracts` and the aligned publish graph are documented here.
 
+## 2.4.0 — 2026-07-30
+
+**Minor:** Coordinated publish-graph release.
+
+- **`conditional` layer** — ordered `DecisionExpr` cases plus required else stack; path-aware input / auth exclusivity; above-only field refs; incomplete case expressions allowed in drafts and blocked at publish (`conditional.incomplete_cases`).
+- **`advance_carousel` button action** — buttons may target a same-screen carousel layer to page forward.
+- **Runtime** — `@getrheo/flow-runtime` exports `./conditionalBranch` (resolve active branch, prune vacated responses, screen rewrite helpers).
+- **SDKs** — Web, React Native, Flutter, and SwiftUI render Conditional and Advance carousel; branding font hydration/registration improvements on native clients.
+- **Skill / agent** — import and flow-creation rules updated for Conditional and path-aware inputs.
+
+Upgrade clients to **`2.4.0`** (npm / `swiftui-v2.4.0` / `flutter-v2.4.0`) before publishing flows that use the new layer or action.
+
 ## 2.0.2 — 2026-06-29
 
 **Patch:** Coordinated release to validate public-repo tag → npm CI. npm package metadata now includes `repository` and `bugs` pointing at public GitHub repos. No API or manifest schema changes.
