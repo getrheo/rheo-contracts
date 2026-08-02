@@ -2,6 +2,16 @@
 
 All notable changes to `@getrheo/contracts` and the aligned publish graph are documented here.
 
+## 2.5.0 — 2026-08-02
+
+**Minor:** Coordinated publish-graph release.
+
+- **Headless external surfaces** — optional `config.hostKey` on `externalSurfaceNodes` for host registry lookup (falls back to node id). Builder splits **Integration Node** (partner providers) from **External Surface Node** (`provider: "headless"`).
+- **SDKs** — React Native, SwiftUI, and Flutter resolve `externalSurfaces` by `hostKey` when set; headless helper/types for host-rendered UI.
+- **Skill / agent** — import and scaffold rules updated for headless surfaces and host keys.
+
+Upgrade clients to **`2.5.0`** (npm / `swiftui-v2.5.0` / `flutter-v2.5.0`) before relying on custom host keys.
+
 ## 2.4.0 — 2026-07-30
 
 **Minor:** Coordinated publish-graph release.
