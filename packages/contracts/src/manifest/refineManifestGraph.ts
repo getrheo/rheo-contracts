@@ -3,6 +3,7 @@ import {
   EXTERNAL_SURFACE_NO_NEXT,
   collectDecisionSdkKeys,
 } from '../decisions.js';
+import { resolveExternalSurfaceHostKey } from '../externalSurfaces.js';
 import { isReservedSdkKey } from '../sdkAttributes.js';
 import type { FlowManifestObjectBase } from './flowManifestObjectBaseSchema.js';
 
@@ -98,6 +99,7 @@ export const refineManifestGraph = (
   });
 
   const seenSurfaceId = new Set<string>();
+  const seenHostKey = new Set<string>();
   manifest.externalSurfaceNodes.forEach((sn, si) => {
     if (seenSurfaceId.has(sn.id)) {
       ctx.addIssue({
@@ -120,6 +122,17 @@ export const refineManifestGraph = (
         message: `external surface id "${sn.id}" collides with a decision node id`,
         path: ['externalSurfaceNodes', si],
       });
+    }
+    if (sn.config.provider === 'headless') {
+      const hostKey = resolveExternalSurfaceHostKey(sn);
+      if (seenHostKey.has(hostKey)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `duplicate external surface host key "${hostKey}"`,
+          path: ['externalSurfaceNodes', si, 'config', 'hostKey'],
+        });
+      }
+      seenHostKey.add(hostKey);
     }
     for (const [outcome, target] of Object.entries(sn.outcomes)) {
       if (target != null && !jumpTargets.has(target)) {

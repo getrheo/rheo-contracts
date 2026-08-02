@@ -298,6 +298,92 @@ describe('FlowManifestSchema', () => {
       expect(FlowManifestSchema.safeParse(m).success).toBe(true);
     });
 
+    it('accepts a headless external surface with completed/back/dismissed outcomes', () => {
+      const m = validFlow();
+      const welcome = m.screens.find((s) => s.id === 'scr_welcome') as Screen;
+      welcome.next = { default: 'surf_custom' };
+      m.externalSurfaceNodes = [
+        {
+          id: 'surf_custom',
+          name: 'Custom host UI',
+          config: { provider: 'headless' },
+          outcomes: {
+            completed: 'scr_done',
+            back: 'scr_welcome',
+            dismissed: 'scr_done',
+          },
+          fallback: 'scr_done',
+        },
+      ];
+      expect(FlowManifestSchema.safeParse(m).success).toBe(true);
+    });
+
+    it('accepts a headless surface with a custom hostKey', () => {
+      const m = validFlow();
+      const welcome = m.screens.find((s) => s.id === 'scr_welcome') as Screen;
+      welcome.next = { default: 'surf_custom' };
+      m.externalSurfaceNodes = [
+        {
+          id: 'surf_custom',
+          name: 'Custom host UI',
+          config: { provider: 'headless', hostKey: 'onboardingQuiz' },
+          outcomes: { completed: 'scr_done' },
+          fallback: 'scr_done',
+        },
+      ];
+      expect(FlowManifestSchema.safeParse(m).success).toBe(true);
+    });
+
+    it('rejects duplicate resolved host keys among headless surfaces', () => {
+      const m = validFlow();
+      m.externalSurfaceNodes = [
+        {
+          id: 'surf_a',
+          config: { provider: 'headless', hostKey: 'sharedKey' },
+          outcomes: {},
+          fallback: 'scr_done',
+        },
+        {
+          id: 'surf_b',
+          config: { provider: 'headless', hostKey: 'sharedKey' },
+          outcomes: {},
+          fallback: 'scr_done',
+        },
+      ];
+      const result = FlowManifestSchema.safeParse(m);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues.some((i) => i.message.includes('duplicate external surface host key'))).toBe(
+          true,
+        );
+      }
+    });
+
+    it('rejects a hostKey that collides with another headless node id', () => {
+      const m = validFlow();
+      m.externalSurfaceNodes = [
+        {
+          id: 'surf_a',
+          config: { provider: 'headless' },
+          outcomes: {},
+          fallback: 'scr_done',
+        },
+        {
+          id: 'surf_b',
+          config: { provider: 'headless', hostKey: 'surf_a' },
+          outcomes: {},
+          fallback: 'scr_done',
+        },
+      ];
+      const result = FlowManifestSchema.safeParse(m);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.issues.some((i) => i.message.includes('duplicate external surface host key'))).toBe(
+          true,
+        );
+      }
+    });
+
     it('rejects an external surface whose outcome target is not found', () => {
       const m = validFlow();
       m.externalSurfaceNodes = [
