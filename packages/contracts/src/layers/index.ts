@@ -19,6 +19,7 @@ export * from './kinds/layout.js';
 export * from './kinds/auth.js';
 export * from './kinds/chrome.js';
 export * from './kinds/input.js';
+export * from './kinds/formPatterns.js';
 export * from './kinds/carousel.js';
 export * from './kinds/conditional.js';
 export { LayerSchema } from './initLayerSchema.js';

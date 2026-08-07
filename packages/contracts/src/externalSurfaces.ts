@@ -34,7 +34,7 @@ export const NORMALIZED_SURFACE_OUTCOMES = [
 export const NormalizedSurfaceOutcomeSchema = z.enum(NORMALIZED_SURFACE_OUTCOMES);
 export type NormalizedSurfaceOutcome = z.infer<typeof NormalizedSurfaceOutcomeSchema>;
 
-export const SurfaceProviderSchema = z.enum(['unspecified', 'revenuecat', 'headless']);
+export const SurfaceProviderSchema = z.enum(['unspecified', 'revenuecat', 'superwall', 'headless']);
 export type SurfaceProvider = z.infer<typeof SurfaceProviderSchema>;
 
 /** Authoring-only: integration not chosen yet in the flow editor. Resolves like a failed surface at runtime until changed. */
@@ -59,6 +59,16 @@ export const RevenueCatSurfaceConfigSchema = z.object({
 export type RevenueCatSurfaceConfig = z.infer<typeof RevenueCatSurfaceConfigSchema>;
 
 /**
+ * Superwall surface configuration. Authors set a placement id from the
+ * Superwall dashboard; Rheo does not call Superwall's REST API to validate it.
+ */
+export const SuperwallSurfaceConfigSchema = z.object({
+  provider: z.literal('superwall'),
+  placementId: z.string().min(1).max(128).optional(),
+});
+export type SuperwallSurfaceConfig = z.infer<typeof SuperwallSurfaceConfigSchema>;
+
+/**
  * Host-rendered headless surface. Authors optionally set `hostKey` for the
  * `externalSurfaces` registry; when omitted, the SDK looks up `node.id`.
  */
@@ -79,10 +89,11 @@ export const HeadlessExternalSurfaceConfigSchema = z.object({
 });
 export type HeadlessExternalSurfaceConfig = z.infer<typeof HeadlessExternalSurfaceConfigSchema>;
 
-/** Future providers (Superwall, etc.) extend this discriminated union. */
+/** Future providers (Adapty, etc.) extend this discriminated union. */
 export const ExternalSurfaceConfigSchema = z.discriminatedUnion('provider', [
   UnspecifiedExternalSurfaceConfigSchema,
   RevenueCatSurfaceConfigSchema,
+  SuperwallSurfaceConfigSchema,
   HeadlessExternalSurfaceConfigSchema,
 ]);
 export type ExternalSurfaceConfig = z.infer<typeof ExternalSurfaceConfigSchema>;
@@ -134,6 +145,7 @@ export const surfaceOutcomesForProvider = (
 ): readonly NormalizedSurfaceOutcome[] => {
   switch (provider) {
     case 'revenuecat':
+    case 'superwall':
       return IAP_SURFACE_OUTCOMES;
     case 'headless':
       return HEADLESS_SURFACE_OUTCOMES;

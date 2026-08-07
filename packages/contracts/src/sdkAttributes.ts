@@ -17,7 +17,23 @@ export const RESERVED_RC_SDK_KEYS = [
 
 export type ReservedRcSdkKey = (typeof RESERVED_RC_SDK_KEYS)[number];
 
-const RESERVED_SDK_KEYS_SET: ReadonlySet<string> = new Set<string>(RESERVED_RC_SDK_KEYS);
+export const RESERVED_SUPERWALL_SDK_KEYS = [
+  /** Last Superwall event observed by the SDK (e.g. `purchase_completed`, `dismissed`). */
+  'onb_sw_last_event',
+  /** Product identifier from the most recent successful Superwall purchase. */
+  'onb_sw_last_product_id',
+  /** Placement id from the most recent Superwall registration. */
+  'onb_sw_last_placement_id',
+] as const;
 
-export const isReservedSdkKey = (key: string): key is ReservedRcSdkKey =>
+export type ReservedSuperwallSdkKey = (typeof RESERVED_SUPERWALL_SDK_KEYS)[number];
+
+export type ReservedSdkKey = ReservedRcSdkKey | ReservedSuperwallSdkKey;
+
+const RESERVED_SDK_KEYS_SET: ReadonlySet<string> = new Set<string>([
+  ...RESERVED_RC_SDK_KEYS,
+  ...RESERVED_SUPERWALL_SDK_KEYS,
+]);
+
+export const isReservedSdkKey = (key: string): key is ReservedSdkKey =>
   RESERVED_SDK_KEYS_SET.has(key);

@@ -17,6 +17,12 @@ describe('externalSurfaceIntegrations', () => {
         revenuecat: { ...APP_INTEGRATIONS_DEFAULTS.revenuecat, enabled: true },
       }),
     ).toEqual(['revenuecat']);
+    expect(
+      listEnabledPartnerSurfaceProviders({
+        ...APP_INTEGRATIONS_DEFAULTS,
+        superwall: { ...APP_INTEGRATIONS_DEFAULTS.superwall, enabled: true },
+      }),
+    ).toEqual(['superwall']);
   });
 
   it('always lists headless independently of app integrations', () => {
@@ -29,16 +35,22 @@ describe('externalSurfaceIntegrations', () => {
       listEnabledExternalSurfaceProviders({
         ...APP_INTEGRATIONS_DEFAULTS,
         revenuecat: { ...APP_INTEGRATIONS_DEFAULTS.revenuecat, enabled: true },
+        superwall: { ...APP_INTEGRATIONS_DEFAULTS.superwall, enabled: true },
       }),
-    ).toEqual(['headless', 'revenuecat']);
+    ).toEqual(['headless', 'revenuecat', 'superwall']);
   });
 
-  it('labels headless and builds config', () => {
+  it('labels partners and builds config', () => {
     expect(externalSurfaceProviderLabel('headless')).toMatch(/Headless/i);
+    expect(externalSurfaceProviderLabel('superwall')).toBe('Superwall');
     expect(createExternalSurfaceConfig('headless')).toEqual({ provider: 'headless' });
     expect(createExternalSurfaceConfig('headless', { hostKey: 'onboardingQuiz' })).toEqual({
       provider: 'headless',
       hostKey: 'onboardingQuiz',
+    });
+    expect(createExternalSurfaceConfig('superwall', { placementId: 'campaign_trigger' })).toEqual({
+      provider: 'superwall',
+      placementId: 'campaign_trigger',
     });
   });
 });

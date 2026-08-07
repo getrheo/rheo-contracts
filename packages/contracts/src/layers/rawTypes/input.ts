@@ -85,6 +85,8 @@ export type TextInputLayerRaw = {
   kind: 'text_input';
   fieldKey: string;
   placeholder?: z.infer<typeof LocalizedTextSchema>;
+  /** Optional helper copy shown under the field when valid / untouched. */
+  helperText?: z.infer<typeof LocalizedTextSchema>;
   /** Defaults to `plain` when omitted (backward compatible). */
   inputType?: TextInputType;
   /** When false, empty trimmed text is valid. Defaults to true when omitted. */
@@ -92,6 +94,12 @@ export type TextInputLayerRaw = {
   minLength?: number;
   maxLength?: number;
   classification: 'safe' | 'sensitive';
+  /** Override autocapitalize (defaults from `inputType` when omitted). */
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  /** Soft keyboard return key label. */
+  returnKeyType?: 'done' | 'next' | 'go' | 'send' | 'search' | 'default';
+  /** When to show inline validation errors (default `onBlur`). */
+  validationMode?: 'onBlur' | 'onSubmit' | 'live';
   /**
    * Optional decoration layers (labels, hints, icons) rendered above
    * the native input field. The native field itself is rendered last.

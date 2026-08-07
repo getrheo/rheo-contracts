@@ -16,14 +16,21 @@ export const layerChildren = (layer: LayerRaw): LayerRaw[] => {
     case 'oauth_login':
     case 'email_password_auth':
     case 'email_password_submit':
+    case 'number_stepper':
       return layer.children;
     case 'carousel':
       return layer.slides;
     case 'text_input':
     case 'scale_input':
     case 'wheel_picker':
+    case 'date_time_input':
+    case 'phone_input':
+    case 'address_input':
     case 'email_password_field':
+    case 'number_stepper_button':
       return layer.children ?? [];
+    case 'number_stepper_value':
+      return [];
     case 'oauth_provider':
       return layer.variant === 'custom' ? layer.children : [];
     default:
@@ -73,7 +80,15 @@ export const layerHasAbsolutePositionAuthored = (layer: LayerRaw): boolean => {
     case 'text_input':
     case 'scale_input':
     case 'wheel_picker':
+    case 'date_time_input':
+    case 'number_stepper':
+    case 'phone_input':
+    case 'address_input':
       return commonStyleHasAbsolutePosition(layer.style, undefined);
+    case 'number_stepper_button':
+      return commonStyleHasAbsolutePosition(layer.style, layer.styleBreakpoints);
+    case 'number_stepper_value':
+      return commonStyleHasAbsolutePosition(layer.style, layer.styleBreakpoints);
     case 'oauth_provider':
       if (layer.variant === 'preset') {
         return commonStyleHasAbsolutePosition(layer.style as CommonStyle | undefined, layer.styleBreakpoints);
@@ -133,6 +148,12 @@ export const layerSubtreeContainsAbsolutePosition = (layer: LayerRaw): boolean =
   }
   if (layer.kind === 'email_password_submit') {
     return layer.children.some(layerSubtreeContainsAbsolutePosition);
+  }
+  if (layer.kind === 'number_stepper') {
+    return layer.children.some(layerSubtreeContainsAbsolutePosition);
+  }
+  if (layer.kind === 'number_stepper_button') {
+    return layer.children?.some(layerSubtreeContainsAbsolutePosition) ?? false;
   }
   return false;
 };

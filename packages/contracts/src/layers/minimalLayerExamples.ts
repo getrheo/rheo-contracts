@@ -136,6 +136,94 @@ export const minimalLayerExamples = (): Record<LayerKind, Layer> => ({
     defaultValue: '2002',
     placeholder: { default: 'Select' },
   },
+  date_time_input: {
+    id: 'lyr_dt',
+    kind: 'date_time_input',
+    fieldKey: 'birthday',
+    mode: 'date',
+    classification: 'safe',
+    defaultValue: '2000-01-15',
+  },
+  number_stepper: {
+    id: 'lyr_stepper',
+    kind: 'number_stepper',
+    fieldKey: 'quantity',
+    min: 1,
+    max: 10,
+    defaultValue: 1,
+    classification: 'safe',
+    direction: 'horizontal' as const,
+    gap: 12,
+    align: 'center' as const,
+    children: [
+      {
+        id: 'lyr_stepper_dec',
+        kind: 'number_stepper_button',
+        role: 'decrement',
+        style: { width: 36, height: 36, radius: 8 },
+        children: [
+          {
+            id: 'lyr_stepper_dec_txt',
+            kind: 'text',
+            text: { default: '-' },
+            style: { fontSize: 20, align: 'center', color: DEFAULT_THEMED_FOREGROUND },
+          },
+        ],
+      },
+      {
+        id: 'lyr_stepper_value',
+        kind: 'number_stepper_value',
+        style: { fontSize: 14, align: 'center', width: 'full', color: DEFAULT_THEMED_FOREGROUND },
+      },
+      {
+        id: 'lyr_stepper_inc',
+        kind: 'number_stepper_button',
+        role: 'increment',
+        style: { width: 36, height: 36, radius: 8 },
+        children: [
+          {
+            id: 'lyr_stepper_inc_txt',
+            kind: 'text',
+            text: { default: '+' },
+            style: { fontSize: 20, align: 'center', color: DEFAULT_THEMED_FOREGROUND },
+          },
+        ],
+      },
+    ],
+  },
+  number_stepper_button: {
+    id: 'lyr_stepper_btn',
+    kind: 'number_stepper_button',
+    role: 'increment',
+    style: { width: 36, height: 36, radius: 8 },
+    children: [
+      {
+        id: 'lyr_stepper_btn_txt',
+        kind: 'text',
+        text: { default: '+' },
+        style: { fontSize: 20, align: 'center', color: DEFAULT_THEMED_FOREGROUND },
+      },
+    ],
+  },
+  number_stepper_value: {
+    id: 'lyr_stepper_val',
+    kind: 'number_stepper_value',
+    style: { fontSize: 14, align: 'center', color: DEFAULT_THEMED_FOREGROUND },
+  },
+  phone_input: {
+    id: 'lyr_phone',
+    kind: 'phone_input',
+    fieldKey: 'phone',
+    defaultCountryCode: 'US',
+    classification: 'safe',
+  },
+  address_input: {
+    id: 'lyr_addr',
+    kind: 'address_input',
+    fieldKey: 'address',
+    defaultCountryCode: 'US',
+    classification: 'safe',
+  },
   oauth_provider: {
     id: 'lyr_oauth_gh',
     kind: 'oauth_provider',
@@ -282,5 +370,10 @@ export const minimalLayerExamples = (): Record<LayerKind, Layer> => ({
 /** Kinds that may appear as the sole layer on a screen body (manifest rules). */
 export const manifestScreenLayerKinds = (): LayerKind[] =>
   LAYER_KINDS.filter(
-    (k) => k !== 'oauth_provider' && k !== 'email_password_field' && k !== 'email_password_submit',
+    (k) =>
+      k !== 'oauth_provider' &&
+      k !== 'email_password_field' &&
+      k !== 'email_password_submit' &&
+      k !== 'number_stepper_button' &&
+      k !== 'number_stepper_value',
   );

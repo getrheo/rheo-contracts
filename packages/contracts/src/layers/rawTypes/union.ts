@@ -23,6 +23,14 @@ import type {
   CheckboxLayerRaw,
 } from './input.js';
 import type {
+  DateTimeInputLayerRaw,
+  NumberStepperLayerRaw,
+  NumberStepperButtonLayerRaw,
+  NumberStepperValueLayerRaw,
+  PhoneInputLayerRaw,
+  AddressInputLayerRaw,
+} from './formPatterns.js';
+import type {
   OAuthProviderLayerRaw,
   OAuthLoginLayerRaw,
   EmailPasswordFieldLayerRaw,
@@ -50,6 +58,12 @@ export type LayerRaw =
   | TextInputLayerRaw
   | ScaleInputLayerRaw
   | WheelPickerLayerRaw
+  | DateTimeInputLayerRaw
+  | NumberStepperLayerRaw
+  | NumberStepperButtonLayerRaw
+  | NumberStepperValueLayerRaw
+  | PhoneInputLayerRaw
+  | AddressInputLayerRaw
   | OAuthProviderLayerRaw
   | OAuthLoginLayerRaw
   | EmailPasswordFieldLayerRaw

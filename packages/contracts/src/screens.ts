@@ -141,7 +141,18 @@ export const walkScreenLayersWithLayoutContext = (
       for (const c of l.children) {
         visit(c, childCtx({ insideChoiceOption: true }));
       }
-    } else if (l.kind === 'text_input' || l.kind === 'scale_input') {
+    } else if (
+      l.kind === 'text_input' ||
+      l.kind === 'scale_input' ||
+      l.kind === 'wheel_picker' ||
+      l.kind === 'date_time_input' ||
+      l.kind === 'phone_input' ||
+      l.kind === 'address_input'
+    ) {
+      for (const c of l.children ?? []) visit(c, childCtx());
+    } else if (l.kind === 'number_stepper') {
+      for (const c of l.children) visit(c, childCtx());
+    } else if (l.kind === 'number_stepper_button') {
       for (const c of l.children ?? []) visit(c, childCtx());
     } else if (l.kind === 'oauth_login') {
       for (const c of l.children) visit(c, childCtx());
@@ -178,7 +189,18 @@ export const walkScreenLayers = (screen: Screen, fn: (l: Layer) => void): void =
     else if (l.kind === 'hyperlink') l.children.forEach(visit);
     else if (l.kind === 'single_choice' || l.kind === 'multiple_choice') {
       l.children.forEach(visit);
-    } else if (l.kind === 'text_input' || l.kind === 'scale_input') {
+    } else if (
+      l.kind === 'text_input' ||
+      l.kind === 'scale_input' ||
+      l.kind === 'wheel_picker' ||
+      l.kind === 'date_time_input' ||
+      l.kind === 'phone_input' ||
+      l.kind === 'address_input'
+    ) {
+      l.children?.forEach(visit);
+    } else if (l.kind === 'number_stepper') {
+      l.children.forEach(visit);
+    } else if (l.kind === 'number_stepper_button') {
       l.children?.forEach(visit);
     } else if (l.kind === 'oauth_login') {
       l.children.forEach(visit);
