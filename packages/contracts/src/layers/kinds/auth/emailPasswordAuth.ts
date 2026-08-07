@@ -19,6 +19,36 @@ import type { EmailPasswordAuthMode, EmailPasswordSlot } from '../../oauthConsta
 
 export const EmailPasswordAuthModeSchema = z.enum(EMAIL_PASSWORD_AUTH_MODES);
 
+/**
+ * Composition rules for passwords on `email_password_auth`.
+ * When set, `minLength` overrides legacy `minPasswordLength`.
+ */
+export const PasswordRulesSchema = z
+  .object({
+    minLength: z.number().int().min(4).max(128).optional(),
+    maxLength: z.number().int().min(4).max(128).optional(),
+    requireUppercase: z.boolean().optional(),
+    requireLowercase: z.boolean().optional(),
+    requireDigit: z.boolean().optional(),
+    requireSpecial: z.boolean().optional(),
+  })
+  .strict()
+  .superRefine((data, ctx) => {
+    if (
+      data.minLength !== undefined &&
+      data.maxLength !== undefined &&
+      data.maxLength < data.minLength
+    ) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'passwordRules.maxLength must be >= minLength',
+        path: ['maxLength'],
+      });
+    }
+  });
+
+export type PasswordRules = z.infer<typeof PasswordRulesSchema>;
+
 /** Legacy flat manifests: inflate `children` from label fields once. */
 const migrateEmailPasswordAuthIncoming = (raw: unknown): unknown => {
   if (!raw || typeof raw !== 'object') return raw;
@@ -173,7 +203,10 @@ const EmailPasswordAuthLayerSchemaValidated = z
     kind: z.literal('email_password_auth'),
     mode: EmailPasswordAuthModeSchema,
     fieldKey: FieldKeySchema,
+    /** @deprecated Prefer `passwordRules.minLength`. Kept for backward compatibility. */
     minPasswordLength: z.number().int().min(4).max(128).optional(),
+    /** Composition rules beyond minimum length (uppercase, digit, special, max). */
+    passwordRules: PasswordRulesSchema.optional(),
     children: z.lazy(() =>
       z
         .array(z.union([EmailPasswordFieldLayerSchema, EmailPasswordSubmitLayerSchema]))

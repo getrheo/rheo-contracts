@@ -6,12 +6,18 @@ export type RevenueCatIntegration = {
   defaultPlacementId: string;
 };
 
+export type SuperwallIntegration = {
+  enabled: boolean;
+  defaultPlacementId: string;
+};
+
 export type AppsFlyerIntegration = {
   enabled: boolean;
 };
 
 export type ResolvedAppIntegrations = {
   revenuecat: RevenueCatIntegration;
+  superwall: SuperwallIntegration;
   appsflyer: AppsFlyerIntegration;
 };
 
@@ -21,12 +27,18 @@ const DEFAULT_REVENUECAT: RevenueCatIntegration = {
   defaultPlacementId: '',
 };
 
+const DEFAULT_SUPERWALL: SuperwallIntegration = {
+  enabled: false,
+  defaultPlacementId: '',
+};
+
 const DEFAULT_APPSFLYER: AppsFlyerIntegration = {
   enabled: false,
 };
 
 const DEFAULT_INTEGRATIONS: ResolvedAppIntegrations = {
   revenuecat: DEFAULT_REVENUECAT,
+  superwall: DEFAULT_SUPERWALL,
   appsflyer: DEFAULT_APPSFLYER,
 };
 
@@ -35,6 +47,7 @@ export const parseAppIntegrations = (raw: unknown | null | undefined): ResolvedA
   if (!parsed.success) return DEFAULT_INTEGRATIONS;
   return {
     revenuecat: { ...DEFAULT_REVENUECAT, ...parsed.data.revenuecat },
+    superwall: { ...DEFAULT_SUPERWALL, ...parsed.data.superwall },
     appsflyer: { ...DEFAULT_APPSFLYER, ...parsed.data.appsflyer },
   };
 };
@@ -47,18 +60,25 @@ export const RevenueCatIntegrationSchema = z.object({
   defaultPlacementId: z.string(),
 });
 
+export const SuperwallIntegrationSchema = z.object({
+  enabled: z.boolean(),
+  defaultPlacementId: z.string(),
+});
+
 export const AppsFlyerIntegrationSchema = z.object({
   enabled: z.boolean(),
 });
 
 export const ResolvedAppIntegrationsSchema = z.object({
   revenuecat: RevenueCatIntegrationSchema,
+  superwall: SuperwallIntegrationSchema,
   appsflyer: AppsFlyerIntegrationSchema,
 });
 
 export const AppIntegrationsSchema = z
   .object({
     revenuecat: RevenueCatIntegrationSchema.partial().optional(),
+    superwall: SuperwallIntegrationSchema.partial().optional(),
     appsflyer: AppsFlyerIntegrationSchema.partial().optional(),
   })
   .passthrough();

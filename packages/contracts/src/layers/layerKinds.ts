@@ -15,6 +15,12 @@ export const LAYER_KINDS = [
   'text_input',
   'scale_input',
   'wheel_picker',
+  'date_time_input',
+  'number_stepper',
+  'number_stepper_button',
+  'number_stepper_value',
+  'phone_input',
+  'address_input',
   'oauth_provider',
   'oauth_login',
   'email_password_auth',
@@ -33,5 +39,22 @@ export const INPUT_LAYER_KINDS = [
   'text_input',
   'scale_input',
   'wheel_picker',
+  'date_time_input',
+  'number_stepper',
+  'phone_input',
+  'address_input',
 ] as const;
 export type InputLayerKind = (typeof INPUT_LAYER_KINDS)[number];
+
+/** Input kinds that collect a draft and require an explicit Continue button. */
+export const MANUAL_SUBMIT_INPUT_KINDS = [
+  'multiple_choice',
+  'text_input',
+  'scale_input',
+  'wheel_picker',
+  'date_time_input',
+  'number_stepper',
+  'phone_input',
+  'address_input',
+] as const;
+export type ManualSubmitInputKind = (typeof MANUAL_SUBMIT_INPUT_KINDS)[number];

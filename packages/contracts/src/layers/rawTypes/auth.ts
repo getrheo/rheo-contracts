@@ -119,8 +119,20 @@ export type EmailPasswordAuthLayerRaw = {
   mode: EmailPasswordAuthMode;
   /** Analytics / completion map key (same role as `text_input.fieldKey`). */
   fieldKey: string;
-  /** Minimum password length when validating (default 8 at runtime if omitted). */
+  /**
+   * Minimum password length when validating (default 8 at runtime if omitted).
+   * @deprecated Prefer `passwordRules.minLength`.
+   */
   minPasswordLength?: number;
+  /** Composition rules (min/max length, uppercase, lowercase, digit, special). */
+  passwordRules?: {
+    minLength?: number;
+    maxLength?: number;
+    requireUppercase?: boolean;
+    requireLowercase?: boolean;
+    requireDigit?: boolean;
+    requireSpecial?: boolean;
+  };
   children: Array<EmailPasswordFieldLayerRaw | EmailPasswordSubmitLayerRaw>;
   gap?: number;
   align?: 'start' | 'center' | 'end' | 'stretch';

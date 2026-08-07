@@ -2,6 +2,17 @@
 
 All notable changes to `@getrheo/contracts` and the aligned publish graph are documented here.
 
+## 2.6.0 — 2026-08-07
+
+**Minor:** Coordinated publish-graph release.
+
+- **Form input layers** — `date_time_input`, `number_stepper` (+ `number_stepper_button` / `number_stepper_value`), `phone_input`, `address_input` with field classification and Continue-button capture rules.
+- **Native form UX** — text input helper text, validation mode, autocapitalize, return key; email/password `passwordRules` (min/max length, composition flags); screen `insetSafeArea`.
+- **Runtime / SDKs** — React Native renders the new inputs (native date/time pickers), password-rule validation, and safe-area insets; builder multi-edit / find-replace are dashboard-only.
+- **Experiments** — primary metric kinds (completion, paywall purchase, scoped custom events by field key / step id) in platform contracts.
+
+Upgrade clients to **`2.6.0`** before publishing flows that use the new form inputs or password rules.
+
 ## 2.5.0 — 2026-08-02
 
 **Minor:** Coordinated publish-graph release.

@@ -136,16 +136,48 @@ export const TextInputFieldStyleSchema = z
   })
   .partial();
 
+/** Native autocapitalize hint for text inputs. */
+export const TextInputAutoCapitalizeSchema = z.enum([
+  'none',
+  'sentences',
+  'words',
+  'characters',
+]);
+
+/** Return / enter key label hint on soft keyboards. */
+export const TextInputReturnKeyTypeSchema = z.enum([
+  'done',
+  'next',
+  'go',
+  'send',
+  'search',
+  'default',
+]);
+
+/**
+ * When to surface validation errors under the field.
+ * Defaults to `onBlur` at runtime when omitted.
+ */
+export const TextInputValidationModeSchema = z.enum(['onBlur', 'onSubmit', 'live']);
+
 export const TextInputLayerSchema = z.object({
   ...baseLayerShape,
   kind: z.literal('text_input'),
   fieldKey: FieldKeySchema,
   placeholder: LocalizedTextSchema.optional(),
+  /** Optional helper copy shown under the field when valid / untouched. */
+  helperText: LocalizedTextSchema.optional(),
   inputType: TextInputTypeSchema.optional(),
   required: z.boolean().optional(),
   minLength: z.number().int().min(0).max(2000).optional(),
   maxLength: z.number().int().positive().max(2000).optional(),
   classification: FieldClassificationSchema,
+  /** Override autocapitalize (defaults from `inputType` when omitted). */
+  autoCapitalize: TextInputAutoCapitalizeSchema.optional(),
+  /** Soft keyboard return key label. */
+  returnKeyType: TextInputReturnKeyTypeSchema.optional(),
+  /** When to show inline validation errors (default `onBlur`). */
+  validationMode: TextInputValidationModeSchema.optional(),
   children: z
     .lazy(() => z.array(lazyLayer()))
     .optional() as unknown as z.ZodType<LayerRaw[] | undefined>,

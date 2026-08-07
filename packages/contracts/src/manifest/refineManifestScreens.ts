@@ -121,6 +121,16 @@ export const refineManifestScreens = (
           path: ['screens', screenIdx, 'regions'],
         });
       }
+      if (
+        (l.kind === 'number_stepper_button' || l.kind === 'number_stepper_value') &&
+        layoutCtx.parentKind !== 'number_stepper'
+      ) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `Layer "${l.id}" (${l.kind}) must be nested under a number stepper`,
+          path: ['screens', screenIdx, 'regions'],
+        });
+      }
     });
 
     const nextDefault = screen.next.default;

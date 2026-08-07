@@ -12,7 +12,7 @@ export type ExternalSurfaceIntegrationProvider = Exclude<SurfaceProvider, 'unspe
 export type PartnerSurfaceProvider = Exclude<ExternalSurfaceIntegrationProvider, 'headless'>;
 
 /**
- * Partner providers available for an Integration Node (RevenueCat, …).
+ * Partner providers available for an Integration Node (RevenueCat, Superwall, …).
  * Requires the matching app integration to be enabled.
  */
 export const listEnabledPartnerSurfaceProviders = (
@@ -20,6 +20,7 @@ export const listEnabledPartnerSurfaceProviders = (
 ): PartnerSurfaceProvider[] => {
   const out: PartnerSurfaceProvider[] = [];
   if (integrations.revenuecat.enabled) out.push('revenuecat');
+  if (integrations.superwall.enabled) out.push('superwall');
   return out;
 };
 
@@ -46,6 +47,8 @@ export const externalSurfaceProviderLabel = (provider: SurfaceProvider): string 
       return 'Not selected';
     case 'revenuecat':
       return 'RevenueCat';
+    case 'superwall':
+      return 'Superwall';
     case 'headless':
       return 'Headless (custom UI)';
     default: {
@@ -61,6 +64,8 @@ export const externalSurfaceProviderMenuDescription = (
   switch (provider) {
     case 'revenuecat':
       return 'Present the host RevenueCat paywall and branch on purchase, restore, dismiss, or failure.';
+    case 'superwall':
+      return 'Register a Superwall placement and branch on purchase, restore, dismiss, skip, or failure.';
     case 'headless':
       return 'Render a host-provided component keyed by host key (or node id); branch on complete, back, or dismiss.';
     default: {
@@ -96,6 +101,11 @@ export const createExternalSurfaceConfig = (
         ...(options?.offeringId ? { offeringId: options.offeringId } : {}),
         ...(options?.placementId ? { placementId: options.placementId } : {}),
         ...(options?.presentation ? { presentation: options.presentation } : {}),
+      };
+    case 'superwall':
+      return {
+        provider: 'superwall',
+        ...(options?.placementId ? { placementId: options.placementId } : {}),
       };
     default: {
       const _exhaustive: never = provider;

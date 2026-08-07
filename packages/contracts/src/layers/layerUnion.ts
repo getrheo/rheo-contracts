@@ -17,6 +17,12 @@ import type {
   TextInputLayerRaw,
   ScaleInputLayerRaw,
   WheelPickerLayerRaw,
+  DateTimeInputLayerRaw,
+  NumberStepperLayerRaw,
+  NumberStepperButtonLayerRaw,
+  NumberStepperValueLayerRaw,
+  PhoneInputLayerRaw,
+  AddressInputLayerRaw,
   OAuthLoginLayerRaw,
   EmailPasswordAuthLayerRaw,
   EmailPasswordFieldLayerRaw,
@@ -50,6 +56,12 @@ export type MultipleChoiceLayer = MultipleChoiceLayerRaw;
 export type TextInputLayer = TextInputLayerRaw;
 export type ScaleInputLayer = ScaleInputLayerRaw;
 export type WheelPickerLayer = WheelPickerLayerRaw;
+export type DateTimeInputLayer = DateTimeInputLayerRaw;
+export type NumberStepperLayer = NumberStepperLayerRaw;
+export type NumberStepperButtonLayer = NumberStepperButtonLayerRaw;
+export type NumberStepperValueLayer = NumberStepperValueLayerRaw;
+export type PhoneInputLayer = PhoneInputLayerRaw;
+export type AddressInputLayer = AddressInputLayerRaw;
 export type OAuthLoginLayer = OAuthLoginLayerRaw;
 export type EmailPasswordAuthLayer = EmailPasswordAuthLayerRaw;
 export type EmailPasswordFieldLayer = EmailPasswordFieldLayerRaw;
@@ -61,14 +73,27 @@ export type CarouselLayer = CarouselLayerRaw;
 export type ConditionalLayer = ConditionalLayerRaw;
 export type ConditionalLayerCase = ConditionalCaseRaw;
 export type HyperlinkLayer = HyperlinkLayerRaw;
-export type InputLayer = SingleChoiceLayer | MultipleChoiceLayer | TextInputLayer | ScaleInputLayer | WheelPickerLayer;
+export type InputLayer =
+  | SingleChoiceLayer
+  | MultipleChoiceLayer
+  | TextInputLayer
+  | ScaleInputLayer
+  | WheelPickerLayer
+  | DateTimeInputLayer
+  | NumberStepperLayer
+  | PhoneInputLayer
+  | AddressInputLayer;
 
 export const isInputLayer = (l: Layer): l is InputLayer =>
   l.kind === 'single_choice' ||
   l.kind === 'multiple_choice' ||
   l.kind === 'text_input' ||
   l.kind === 'scale_input' ||
-  l.kind === 'wheel_picker';
+  l.kind === 'wheel_picker' ||
+  l.kind === 'date_time_input' ||
+  l.kind === 'number_stepper' ||
+  l.kind === 'phone_input' ||
+  l.kind === 'address_input';
 
 export const isParentLayer = (
   l: Layer,
@@ -84,6 +109,11 @@ export const isParentLayer = (
   | TextInputLayer
   | ScaleInputLayer
   | WheelPickerLayer
+  | DateTimeInputLayer
+  | NumberStepperLayer
+  | NumberStepperButtonLayer
+  | PhoneInputLayer
+  | AddressInputLayer
   | OAuthLoginLayer
   | OAuthProviderCustomLayer
   | EmailPasswordAuthLayer
@@ -100,6 +130,11 @@ export const isParentLayer = (
   l.kind === 'text_input' ||
   l.kind === 'scale_input' ||
   l.kind === 'wheel_picker' ||
+  l.kind === 'date_time_input' ||
+  l.kind === 'number_stepper' ||
+  l.kind === 'number_stepper_button' ||
+  l.kind === 'phone_input' ||
+  l.kind === 'address_input' ||
   l.kind === 'oauth_login' ||
   (l.kind === 'oauth_provider' && l.variant === 'custom') ||
   l.kind === 'email_password_auth' ||

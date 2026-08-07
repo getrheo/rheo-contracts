@@ -18,14 +18,14 @@ export type IapPurchasePeriodType = z.infer<typeof IapPurchasePeriodTypeSchema>;
 export const IapPurchaseEventPropertiesSchema = z
   .object({
     /** External surface provider that produced the purchase. */
-    provider: z.literal('revenuecat'),
+    provider: z.enum(['revenuecat', 'superwall']),
     /** Manifest node id of the surface (e.g. `surf_paywall_welcome`). */
     surface_node_id: z.string().min(1).max(128),
     /** Store product identifier (e.g. `pro_annual`). */
     product_id: z.string().min(1).max(256),
-    /** Optional RevenueCat offering id (manifest config or RC metadata). */
+    /** Optional offering id (RevenueCat) or placement id mirrored for analytics. */
     offering_id: z.string().min(1).max(128).optional(),
-    /** Optional RevenueCat package identifier within the offering (e.g. `$rc_annual`). */
+    /** Optional package identifier within an offering (e.g. `$rc_annual`). */
     package_id: z.string().min(1).max(128).optional(),
     /** Localized gross store price at purchase time (non-negative). */
     price: z.number().nonnegative().optional(),

@@ -1,6 +1,7 @@
 export * from './layout.js';
 export * from './chrome.js';
 export * from './input.js';
+export * from './formPatterns.js';
 export * from './auth.js';
 export * from './carousel.js';
 export * from './conditional.js';

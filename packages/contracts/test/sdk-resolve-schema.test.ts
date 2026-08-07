@@ -21,6 +21,7 @@ describe('SdkResolveResponseSchema', () => {
       features: { attribution: true },
       integrations: {
         revenuecat: { enabled: false, defaultOfferingId: '', defaultPlacementId: '' },
+        superwall: { enabled: false, defaultPlacementId: '' },
         appsflyer: { enabled: false },
       },
     });
