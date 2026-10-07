@@ -9,14 +9,21 @@ import {
 } from './externalSurfaceIntegrations.js';
 
 describe('externalSurfaceIntegrations', () => {
-  it('lists partner providers only when enabled', () => {
+  it('lists a partner only when that integration is enabled', () => {
     expect(listEnabledPartnerSurfaceProviders(APP_INTEGRATIONS_DEFAULTS)).toEqual([]);
     expect(
       listEnabledPartnerSurfaceProviders({
         ...APP_INTEGRATIONS_DEFAULTS,
+        stripe: { enabled: true },
+      }),
+    ).toEqual(['stripe']);
+    expect(
+      listEnabledPartnerSurfaceProviders({
+        ...APP_INTEGRATIONS_DEFAULTS,
+        stripe: { enabled: true },
         revenuecat: { ...APP_INTEGRATIONS_DEFAULTS.revenuecat, enabled: true },
       }),
-    ).toEqual(['revenuecat']);
+    ).toEqual(['stripe', 'revenuecat']);
     expect(
       listEnabledPartnerSurfaceProviders({
         ...APP_INTEGRATIONS_DEFAULTS,
@@ -34,15 +41,17 @@ describe('externalSurfaceIntegrations', () => {
     expect(
       listEnabledExternalSurfaceProviders({
         ...APP_INTEGRATIONS_DEFAULTS,
+        stripe: { enabled: true },
         revenuecat: { ...APP_INTEGRATIONS_DEFAULTS.revenuecat, enabled: true },
         superwall: { ...APP_INTEGRATIONS_DEFAULTS.superwall, enabled: true },
       }),
-    ).toEqual(['headless', 'revenuecat', 'superwall']);
+    ).toEqual(['headless', 'stripe', 'revenuecat', 'superwall']);
   });
 
   it('labels partners and builds config', () => {
     expect(externalSurfaceProviderLabel('headless')).toMatch(/Headless/i);
     expect(externalSurfaceProviderLabel('superwall')).toBe('Superwall');
+    expect(externalSurfaceProviderLabel('stripe')).toBe('Stripe');
     expect(createExternalSurfaceConfig('headless')).toEqual({ provider: 'headless' });
     expect(createExternalSurfaceConfig('headless', { hostKey: 'onboardingQuiz' })).toEqual({
       provider: 'headless',
@@ -51,6 +60,15 @@ describe('externalSurfaceIntegrations', () => {
     expect(createExternalSurfaceConfig('superwall', { placementId: 'campaign_trigger' })).toEqual({
       provider: 'superwall',
       placementId: 'campaign_trigger',
+    });
+    expect(createExternalSurfaceConfig('stripe')).toEqual({ provider: 'stripe' });
+    expect(
+      createExternalSurfaceConfig('stripe', {
+        paymentLinkUrl: 'https://buy.stripe.com/test_abc',
+      }),
+    ).toEqual({
+      provider: 'stripe',
+      paymentLinkUrl: 'https://buy.stripe.com/test_abc',
     });
   });
 });

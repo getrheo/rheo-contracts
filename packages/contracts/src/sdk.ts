@@ -23,7 +23,14 @@ export const SdkResolveRequestSchema = z.object({
 });
 export type SdkResolveRequest = z.infer<typeof SdkResolveRequestSchema>;
 
+export type SdkResolveExperiment = {
+  id: string;
+  variantKey: string;
+  variantId: string;
+};
+
 export type SdkResolveResponse = {
+  kind: 'flow';
   flowId: string;
   versionId: string;
   versionNumber: number;
@@ -32,6 +39,8 @@ export type SdkResolveResponse = {
   channelId: string;
   experimentId: string | null;
   variantId: string | null;
+  /** Null when the channel is pinned. Set while an experiment is bucketing. */
+  experiment: SdkResolveExperiment | null;
   manifest: FlowManifest;
   mediaMap: Record<string, string>;
   branding?: Branding;
@@ -43,7 +52,14 @@ export type SdkResolveResponse = {
  * Explicit `ZodType<…>` annotations keep DTS emit under TS7056 as layer/manifest
  * unions grow (layout breakpoints).
  */
+export const SdkResolveExperimentSchema = z.object({
+  id: z.string().uuid(),
+  variantKey: z.string().min(1),
+  variantId: z.string().min(1),
+});
+
 export const SdkResolveResponseSchema: z.ZodType<SdkResolveResponse> = z.object({
+  kind: z.literal('flow'),
   flowId: z.string().uuid(),
   versionId: z.string().uuid(),
   versionNumber: z.number().int().positive(),
@@ -54,6 +70,7 @@ export const SdkResolveResponseSchema: z.ZodType<SdkResolveResponse> = z.object(
   channelId: z.string(),
   experimentId: z.string().uuid().nullable(),
   variantId: z.string().nullable(),
+  experiment: SdkResolveExperimentSchema.nullable(),
   manifest: FlowManifestSchema,
   mediaMap: z.record(z.string(), z.string().url()),
   /** App branding (gradient presets, etc.) when present on the app record. */
@@ -69,24 +86,11 @@ export const SdkResolveResponseSchema: z.ZodType<SdkResolveResponse> = z.object(
   integrations: ResolvedAppIntegrationsSchema,
 }) as z.ZodType<SdkResolveResponse>;
 
-/**
- * Batch resolve response for `POST /v1/sdk/resolve-all`. Returns one entry per
- * assigned channel in the publishable key's environment. Each entry has the
- * same shape as a single `/resolve`, so SDKs can drop them straight into the
- * per-channel manifest cache (channels that fail to resolve are omitted).
- */
-export type SdkResolveAllResponse = {
-  channels: SdkResolveResponse[];
-};
-
-export const SdkResolveAllResponseSchema: z.ZodType<SdkResolveAllResponse> = z.object({
-  channels: z.array(SdkResolveResponseSchema),
-}) as z.ZodType<SdkResolveAllResponse>;
-
 /** Resolve metadata without manifest/media (for tooling; terminal callbacks use {@link FlowTerminalCorrelationSchema}). */
 export type SdkResolveAssignment = Omit<SdkResolveResponse, 'manifest' | 'mediaMap'>;
 
 export const SdkResolveAssignmentSchema: z.ZodType<SdkResolveAssignment> = z.object({
+  kind: z.literal('flow'),
   flowId: z.string().uuid(),
   versionId: z.string().uuid(),
   versionNumber: z.number().int().positive(),
@@ -95,6 +99,7 @@ export const SdkResolveAssignmentSchema: z.ZodType<SdkResolveAssignment> = z.obj
   channelId: z.string(),
   experimentId: z.string().uuid().nullable(),
   variantId: z.string().nullable(),
+  experiment: SdkResolveExperimentSchema.nullable(),
   branding: BrandingSchema.optional(),
   features: z
     .object({

@@ -8,9 +8,9 @@ Public home for [`@getrheo/contracts`](https://www.npmjs.com/package/%40getrheo%
 | --- | --- |
 | [`@getrheo/contracts`](https://www.npmjs.com/package/%40getrheo%2Fcontracts) | SDK-visible contracts (no dashboard or platform-only types) |
 
-**Current release line:** `2.6.0.x` (publish on git tag `v2.6.0`).
+**Current release line:** `3.0.0.x` (publish on git tag `v3.0.0`).
 
-**Compatibility:** `@getrheo/contracts@2.x` aligns with [`rheo-js`](https://github.com/getrheo/rheo-js), [`rheo-react-native`](https://github.com/getrheo/rheo-react-native), and [`@getrheo/rheo-skill`](https://www.npmjs.com/package/%40getrheo%2Frheo-skill) on matching major.minor.
+**Compatibility:** `@getrheo/contracts@3.x` aligns with [`rheo-js`](https://github.com/getrheo/rheo-js), [`rheo-react-native`](https://github.com/getrheo/rheo-react-native), and [`@getrheo/rheo-skill`](https://www.npmjs.com/package/%40getrheo%2Frheo-skill) on matching major.minor.
 
 ## Install
 

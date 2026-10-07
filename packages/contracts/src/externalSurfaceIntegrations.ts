@@ -8,17 +8,24 @@ import type {
 /** Enabled app integrations / always-on providers that can be chosen for a surface step (excludes `unspecified`). */
 export type ExternalSurfaceIntegrationProvider = Exclude<SurfaceProvider, 'unspecified'>;
 
-/** Partner providers that require an App Settings integration toggle (excludes headless). */
+/**
+ * Integration Node providers (excludes headless External Surface Nodes).
+ * Stripe, RevenueCat, and Superwall each require an App Settings toggle.
+ */
 export type PartnerSurfaceProvider = Exclude<ExternalSurfaceIntegrationProvider, 'headless'>;
 
+/** Partner providers that require an App Settings integration toggle. */
+export type ToggleGatedPartnerSurfaceProvider = PartnerSurfaceProvider;
+
 /**
- * Partner providers available for an Integration Node (RevenueCat, Superwall, …).
- * Requires the matching app integration to be enabled.
+ * Partner providers available for an Integration Node.
+ * Each provider requires the matching app integration to be enabled.
  */
 export const listEnabledPartnerSurfaceProviders = (
   integrations: ResolvedAppIntegrations,
 ): PartnerSurfaceProvider[] => {
   const out: PartnerSurfaceProvider[] = [];
+  if (integrations.stripe.enabled) out.push('stripe');
   if (integrations.revenuecat.enabled) out.push('revenuecat');
   if (integrations.superwall.enabled) out.push('superwall');
   return out;
@@ -49,6 +56,8 @@ export const externalSurfaceProviderLabel = (provider: SurfaceProvider): string 
       return 'RevenueCat';
     case 'superwall':
       return 'Superwall';
+    case 'stripe':
+      return 'Stripe';
     case 'headless':
       return 'Headless (custom UI)';
     default: {
@@ -66,6 +75,8 @@ export const externalSurfaceProviderMenuDescription = (
       return 'Present the host RevenueCat paywall and branch on purchase, restore, dismiss, or failure.';
     case 'superwall':
       return 'Register a Superwall placement and branch on purchase, restore, dismiss, skip, or failure.';
+    case 'stripe':
+      return 'Redirect to a Stripe Payment Link; branch on purchase, cancel, dismiss, or failure.';
     case 'headless':
       return 'Render a host-provided component keyed by host key (or node id); branch on complete, back, or dismiss.';
     default: {
@@ -80,6 +91,7 @@ export type CreateExternalSurfaceConfigOptions = {
   placementId?: string;
   presentation?: RevenueCatSurfacePresentation;
   hostKey?: string;
+  paymentLinkUrl?: string;
 };
 
 /** Build manifest `config` for a surface provider (extend the switch as new providers ship). */
@@ -106,6 +118,11 @@ export const createExternalSurfaceConfig = (
       return {
         provider: 'superwall',
         ...(options?.placementId ? { placementId: options.placementId } : {}),
+      };
+    case 'stripe':
+      return {
+        provider: 'stripe',
+        ...(options?.paymentLinkUrl ? { paymentLinkUrl: options.paymentLinkUrl } : {}),
       };
     default: {
       const _exhaustive: never = provider;

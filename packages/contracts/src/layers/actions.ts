@@ -106,6 +106,7 @@ export const ButtonActionSchema = z.discriminatedUnion('kind', [
     targetLayerId: z.string().min(1),
     onLast: CarouselAdvanceOnLastSchema.optional(),
   }),
+  z.object({ kind: z.literal('dismiss_banner') }),
 ]);
 export type ButtonAction = z.infer<typeof ButtonActionSchema>;
 

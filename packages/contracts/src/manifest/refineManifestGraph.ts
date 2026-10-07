@@ -134,6 +134,13 @@ export const refineManifestGraph = (
       }
       seenHostKey.add(hostKey);
     }
+    if (sn.config.provider === 'stripe' && !sn.config.paymentLinkUrl) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `external surface "${sn.id}" Stripe paymentLinkUrl is required`,
+        path: ['externalSurfaceNodes', si, 'config', 'paymentLinkUrl'],
+      });
+    }
     for (const [outcome, target] of Object.entries(sn.outcomes)) {
       if (target != null && !jumpTargets.has(target)) {
         ctx.addIssue({

@@ -318,6 +318,39 @@ describe('FlowManifestSchema', () => {
       expect(FlowManifestSchema.safeParse(m).success).toBe(true);
     });
 
+    it('accepts a Stripe external surface with paymentLinkUrl', () => {
+      const m = validFlow();
+      const welcome = m.screens.find((s) => s.id === 'scr_welcome') as Screen;
+      welcome.next = { default: 'surf_stripe' };
+      m.externalSurfaceNodes = [
+        {
+          id: 'surf_stripe',
+          name: 'Checkout',
+          config: { provider: 'stripe', paymentLinkUrl: 'https://buy.stripe.com/test_abc' },
+          outcomes: {
+            purchase_completed: 'scr_done',
+            purchase_cancelled: 'scr_welcome',
+          },
+          fallback: 'scr_done',
+        },
+      ];
+      expect(FlowManifestSchema.safeParse(m).success).toBe(true);
+    });
+
+    it('rejects a Stripe surface without paymentLinkUrl', () => {
+      const m = validFlow();
+      m.externalSurfaceNodes = [
+        {
+          id: 'surf_stripe',
+          config: { provider: 'stripe' },
+          outcomes: {},
+          fallback: 'scr_done',
+        },
+      ];
+      const result = FlowManifestSchema.safeParse(m);
+      expect(result.success).toBe(false);
+    });
+
     it('accepts a headless surface with a custom hostKey', () => {
       const m = validFlow();
       const welcome = m.screens.find((s) => s.id === 'scr_welcome') as Screen;

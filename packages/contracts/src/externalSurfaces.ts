@@ -34,8 +34,22 @@ export const NORMALIZED_SURFACE_OUTCOMES = [
 export const NormalizedSurfaceOutcomeSchema = z.enum(NORMALIZED_SURFACE_OUTCOMES);
 export type NormalizedSurfaceOutcome = z.infer<typeof NormalizedSurfaceOutcomeSchema>;
 
-export const SurfaceProviderSchema = z.enum(['unspecified', 'revenuecat', 'superwall', 'headless']);
+export const SurfaceProviderSchema = z.enum([
+  'unspecified',
+  'revenuecat',
+  'superwall',
+  'stripe',
+  'headless',
+]);
 export type SurfaceProvider = z.infer<typeof SurfaceProviderSchema>;
+
+/** Stripe Hosted Checkout outcomes (no restore path). */
+export const STRIPE_SURFACE_OUTCOMES = [
+  'purchase_completed',
+  'purchase_cancelled',
+  'dismissed',
+  'failed',
+] as const;
 
 /** Authoring-only: integration not chosen yet in the flow editor. Resolves like a failed surface at runtime until changed. */
 export const UnspecifiedExternalSurfaceConfigSchema = z.object({
@@ -68,6 +82,40 @@ export const SuperwallSurfaceConfigSchema = z.object({
 });
 export type SuperwallSurfaceConfig = z.infer<typeof SuperwallSurfaceConfigSchema>;
 
+/** Payment Link hosts the web SDK is allowed to redirect to. */
+export const isStripePaymentLinkHost = (hostname: string): boolean => {
+  const host = hostname.toLowerCase();
+  return host === 'stripe.com' || host.endsWith('.stripe.com');
+};
+
+/**
+ * Stripe Payment Link URL (`https://buy.stripe.com/…` or another `*.stripe.com` host).
+ * Optional while authoring; publish refine requires a valid URL.
+ */
+export const StripePaymentLinkUrlSchema = z
+  .string()
+  .min(1)
+  .max(2048)
+  .refine((raw) => {
+    try {
+      const url = new URL(raw);
+      return url.protocol === 'https:' && isStripePaymentLinkHost(url.hostname);
+    } catch {
+      return false;
+    }
+  }, 'Stripe Payment Link must be an https URL on buy.stripe.com or *.stripe.com');
+export type StripePaymentLinkUrl = z.infer<typeof StripePaymentLinkUrlSchema>;
+
+/**
+ * Stripe Payment Link surface. No Stripe API keys on Rheo or in the host app for v1 —
+ * create the link in Stripe Dashboard and paste the URL here.
+ */
+export const StripeSurfaceConfigSchema = z.object({
+  provider: z.literal('stripe'),
+  paymentLinkUrl: StripePaymentLinkUrlSchema.optional(),
+});
+export type StripeSurfaceConfig = z.infer<typeof StripeSurfaceConfigSchema>;
+
 /**
  * Host-rendered headless surface. Authors optionally set `hostKey` for the
  * `externalSurfaces` registry; when omitted, the SDK looks up `node.id`.
@@ -94,6 +142,7 @@ export const ExternalSurfaceConfigSchema = z.discriminatedUnion('provider', [
   UnspecifiedExternalSurfaceConfigSchema,
   RevenueCatSurfaceConfigSchema,
   SuperwallSurfaceConfigSchema,
+  StripeSurfaceConfigSchema,
   HeadlessExternalSurfaceConfigSchema,
 ]);
 export type ExternalSurfaceConfig = z.infer<typeof ExternalSurfaceConfigSchema>;
@@ -147,6 +196,8 @@ export const surfaceOutcomesForProvider = (
     case 'revenuecat':
     case 'superwall':
       return IAP_SURFACE_OUTCOMES;
+    case 'stripe':
+      return STRIPE_SURFACE_OUTCOMES;
     case 'headless':
       return HEADLESS_SURFACE_OUTCOMES;
     case 'unspecified':

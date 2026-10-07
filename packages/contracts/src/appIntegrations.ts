@@ -15,10 +15,15 @@ export type AppsFlyerIntegration = {
   enabled: boolean;
 };
 
+export type StripeIntegration = {
+  enabled: boolean;
+};
+
 export type ResolvedAppIntegrations = {
   revenuecat: RevenueCatIntegration;
   superwall: SuperwallIntegration;
   appsflyer: AppsFlyerIntegration;
+  stripe: StripeIntegration;
 };
 
 const DEFAULT_REVENUECAT: RevenueCatIntegration = {
@@ -36,10 +41,15 @@ const DEFAULT_APPSFLYER: AppsFlyerIntegration = {
   enabled: false,
 };
 
+const DEFAULT_STRIPE: StripeIntegration = {
+  enabled: false,
+};
+
 const DEFAULT_INTEGRATIONS: ResolvedAppIntegrations = {
   revenuecat: DEFAULT_REVENUECAT,
   superwall: DEFAULT_SUPERWALL,
   appsflyer: DEFAULT_APPSFLYER,
+  stripe: DEFAULT_STRIPE,
 };
 
 export const parseAppIntegrations = (raw: unknown | null | undefined): ResolvedAppIntegrations => {
@@ -49,6 +59,7 @@ export const parseAppIntegrations = (raw: unknown | null | undefined): ResolvedA
     revenuecat: { ...DEFAULT_REVENUECAT, ...parsed.data.revenuecat },
     superwall: { ...DEFAULT_SUPERWALL, ...parsed.data.superwall },
     appsflyer: { ...DEFAULT_APPSFLYER, ...parsed.data.appsflyer },
+    stripe: { ...DEFAULT_STRIPE, ...parsed.data.stripe },
   };
 };
 
@@ -69,10 +80,15 @@ export const AppsFlyerIntegrationSchema = z.object({
   enabled: z.boolean(),
 });
 
+export const StripeIntegrationSchema = z.object({
+  enabled: z.boolean(),
+});
+
 export const ResolvedAppIntegrationsSchema = z.object({
   revenuecat: RevenueCatIntegrationSchema,
   superwall: SuperwallIntegrationSchema,
   appsflyer: AppsFlyerIntegrationSchema,
+  stripe: StripeIntegrationSchema,
 });
 
 export const AppIntegrationsSchema = z
@@ -80,6 +96,7 @@ export const AppIntegrationsSchema = z
     revenuecat: RevenueCatIntegrationSchema.partial().optional(),
     superwall: SuperwallIntegrationSchema.partial().optional(),
     appsflyer: AppsFlyerIntegrationSchema.partial().optional(),
+    stripe: StripeIntegrationSchema.partial().optional(),
   })
   .passthrough();
 

@@ -2,6 +2,16 @@
 
 All notable changes to `@getrheo/contracts` and the aligned publish graph are documented here.
 
+## 3.0.0 — 2026-10-07
+
+**Major:** New coordinated publish-graph baseline.
+
+- Aligns all `@getrheo/*` npm packages, platform pins, and public-repo release tags on **`3.0.0`**.
+- Establishes the 3.x train as the install/default pin for platform consumers and example apps.
+- No intentional manifest or SDK wire-format break in this cut; major bump is the coordinated baseline for the next public release train.
+
+Upgrade clients to **`3.0.0`** (npm / `flutter-v3.0.0` when tagged; SwiftUI public mirror remains paused).
+
 ## 2.6.0 — 2026-08-07
 
 **Minor:** Coordinated publish-graph release.
