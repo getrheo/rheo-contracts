@@ -7,6 +7,8 @@ describe('SdkResolveResponseSchema', () => {
   it('parses resolve payload with branding from @getrheo/contracts/branding', () => {
     const manifest = validFlow();
     const parsed = SdkResolveResponseSchema.safeParse({
+      kind: 'flow',
+      experiment: null,
       flowId: manifest.flowId,
       versionId: '22222222-2222-4222-8222-222222222222',
       versionNumber: 1,
@@ -23,6 +25,7 @@ describe('SdkResolveResponseSchema', () => {
         revenuecat: { enabled: false, defaultOfferingId: '', defaultPlacementId: '' },
         superwall: { enabled: false, defaultPlacementId: '' },
         appsflyer: { enabled: false },
+        stripe: { enabled: false },
       },
     });
     expect(parsed.success).toBe(true);

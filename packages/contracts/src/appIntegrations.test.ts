@@ -15,6 +15,7 @@ describe('parseAppIntegrations', () => {
         defaultPlacementId: '',
       },
       appsflyer: { enabled: false },
+      stripe: { enabled: false },
     });
   });
 
@@ -36,6 +37,7 @@ describe('parseAppIntegrations', () => {
         defaultPlacementId: 'campaign_trigger',
       },
       appsflyer: { enabled: true },
+      stripe: { enabled: false },
     });
   });
 
@@ -51,6 +53,7 @@ describe('parseAppIntegrations', () => {
         defaultPlacementId: '',
       },
       appsflyer: { enabled: false },
+      stripe: { enabled: false },
     });
   });
 
@@ -66,6 +69,7 @@ describe('parseAppIntegrations', () => {
         defaultPlacementId: '',
       },
       appsflyer: { enabled: true },
+      stripe: { enabled: false },
     });
   });
 
@@ -81,6 +85,7 @@ describe('parseAppIntegrations', () => {
         defaultPlacementId: '',
       },
       appsflyer: { enabled: false },
+      stripe: { enabled: false },
     });
   });
 });

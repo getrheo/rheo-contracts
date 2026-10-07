@@ -18,7 +18,7 @@ export type IapPurchasePeriodType = z.infer<typeof IapPurchasePeriodTypeSchema>;
 export const IapPurchaseEventPropertiesSchema = z
   .object({
     /** External surface provider that produced the purchase. */
-    provider: z.enum(['revenuecat', 'superwall']),
+    provider: z.enum(['revenuecat', 'superwall', 'stripe']),
     /** Manifest node id of the surface (e.g. `surf_paywall_welcome`). */
     surface_node_id: z.string().min(1).max(128),
     /** Store product identifier (e.g. `pro_annual`). */

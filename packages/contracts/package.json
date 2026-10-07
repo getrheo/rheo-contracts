@@ -1,6 +1,6 @@
 {
   "name": "@getrheo/contracts",
-  "version": "2.6.0",
+  "version": "3.0.0",
   "type": "module",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -9,6 +9,8 @@
     "./animations": "./src/animations.ts",
     "./__fixtures__/*": "./src/__fixtures__/*.ts",
     "./appIntegrations": "./src/appIntegrations.ts",
+    "./bannerChannelEvents": "./src/bannerChannelEvents.ts",
+    "./bannerManifest": "./src/bannerManifest.ts",
     "./branding": "./src/branding.ts",
     "./canvasEditorGates": "./src/canvasEditorGates.ts",
     "./constants": "./src/constants/index.ts",
@@ -22,10 +24,15 @@
     "./layers": "./src/layers.ts",
     "./localized": "./src/localized.ts",
     "./manifest": "./src/manifest.ts",
+    "./manifestCapabilities": "./src/manifestCapabilities.ts",
     "./media": "./src/media.ts",
     "./screens": "./src/screens.ts",
     "./sdk": "./src/sdk.ts",
-    "./sdkAttributes": "./src/sdkAttributes.ts"
+    "./sdkChannel": "./src/sdkChannel.ts",
+    "./contentKind": "./src/contentKind.ts",
+    "./codeChannelEvents": "./src/codeChannelEvents.ts",
+    "./sdkAttributes": "./src/sdkAttributes.ts",
+    "./track": "./src/track.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -65,6 +72,16 @@
         "types": "./dist/appIntegrations.d.ts",
         "import": "./dist/appIntegrations.js",
         "default": "./dist/appIntegrations.js"
+      },
+      "./bannerChannelEvents": {
+        "types": "./dist/bannerChannelEvents.d.ts",
+        "import": "./dist/bannerChannelEvents.js",
+        "default": "./dist/bannerChannelEvents.js"
+      },
+      "./bannerManifest": {
+        "types": "./dist/bannerManifest.d.ts",
+        "import": "./dist/bannerManifest.js",
+        "default": "./dist/bannerManifest.js"
       },
       "./branding": {
         "types": "./dist/branding.d.ts",
@@ -131,6 +148,11 @@
         "import": "./dist/manifest.js",
         "default": "./dist/manifest.js"
       },
+      "./manifestCapabilities": {
+        "types": "./dist/manifestCapabilities.d.ts",
+        "import": "./dist/manifestCapabilities.js",
+        "default": "./dist/manifestCapabilities.js"
+      },
       "./media": {
         "types": "./dist/media.d.ts",
         "import": "./dist/media.js",
@@ -146,10 +168,30 @@
         "import": "./dist/sdk.js",
         "default": "./dist/sdk.js"
       },
+      "./sdkChannel": {
+        "types": "./dist/sdkChannel.d.ts",
+        "import": "./dist/sdkChannel.js",
+        "default": "./dist/sdkChannel.js"
+      },
+      "./contentKind": {
+        "types": "./dist/contentKind.d.ts",
+        "import": "./dist/contentKind.js",
+        "default": "./dist/contentKind.js"
+      },
+      "./codeChannelEvents": {
+        "types": "./dist/codeChannelEvents.d.ts",
+        "import": "./dist/codeChannelEvents.js",
+        "default": "./dist/codeChannelEvents.js"
+      },
       "./sdkAttributes": {
         "types": "./dist/sdkAttributes.d.ts",
         "import": "./dist/sdkAttributes.js",
         "default": "./dist/sdkAttributes.js"
+      },
+      "./track": {
+        "types": "./dist/track.d.ts",
+        "import": "./dist/track.js",
+        "default": "./dist/track.js"
       }
     },
     "main": "./dist/index.js",

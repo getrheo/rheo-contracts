@@ -70,6 +70,8 @@ export const EVENT_NAMES = [
   'attribution_context_observed',
   /** Successful in-app purchase from an external surface (e.g. RevenueCat paywall); commerce fields live in `properties`. */
   'iap_purchase',
+  'banner_impression',
+  'banner_dismissed',
 ] as const;
 export type EventName = (typeof EVENT_NAMES)[number];
 
