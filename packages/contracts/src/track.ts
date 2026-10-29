@@ -16,7 +16,7 @@ export const SdkTrackPropertyValueSchema = z.union([
  */
 export const SdkTrackRequestSchema = z
   .object({
-    eventId: z.string().uuid(),
+    eventId: z.string().guid(),
     name: z.string().trim().min(1).max(120),
     timestamp: z.string().datetime(),
     identity: SdkIdentitySchema,

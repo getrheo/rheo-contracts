@@ -15,8 +15,7 @@ export type IapPurchasePeriodType = z.infer<typeof IapPurchasePeriodTypeSchema>;
  * time. `price_usd` is computed server-side at ingest from a daily FX table and
  * MUST NOT be sent by the SDK.
  */
-export const IapPurchaseEventPropertiesSchema = z
-  .object({
+const IapPurchaseEventPropertiesObjectSchema = z.object({
     /** External surface provider that produced the purchase. */
     provider: z.enum(['revenuecat', 'superwall', 'stripe']),
     /** Manifest node id of the surface (e.g. `surf_paywall_welcome`). */
@@ -37,8 +36,9 @@ export const IapPurchaseEventPropertiesSchema = z
       .optional(),
     /** Period type when known. */
     period_type: IapPurchasePeriodTypeSchema.optional(),
-  })
-  .refine(
+  });
+
+export const IapPurchaseEventPropertiesSchema = IapPurchaseEventPropertiesObjectSchema.refine(
     (v) => (v.price === undefined) === (v.currency === undefined),
     {
       message: 'price and currency must be provided together',
@@ -52,8 +52,7 @@ export type IapPurchaseEventProperties = z.infer<typeof IapPurchaseEventProperti
  * (and an `fx_unavailable` flag when FX lookup failed). The SDK never sets
  * these — ingest strips/overrides them.
  */
-export const IapPurchaseStoredPropertiesSchema = IapPurchaseEventPropertiesSchema.innerType()
-  .extend({
+export const IapPurchaseStoredPropertiesSchema = IapPurchaseEventPropertiesObjectSchema.extend({
     /** USD-normalized price computed server-side from daily FX rates. Null when FX missing. */
     price_usd: z.number().nonnegative().nullable().optional(),
     /** True when client provided price + currency but FX conversion was unavailable. */

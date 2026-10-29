@@ -34,7 +34,7 @@ const propertiesSchema = z
  * Does not write the funnel Enum table or Engage segment events.
  */
 export const SdkProductAnalyticsEventSchema = z.object({
-  eventId: z.string().uuid(),
+  eventId: z.string().guid(),
   name: z.string().trim().min(1).max(120),
   timestamp: z.string().datetime(),
   identity: SdkIdentitySchema,

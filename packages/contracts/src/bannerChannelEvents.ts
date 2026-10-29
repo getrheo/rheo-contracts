@@ -5,13 +5,13 @@ export const BANNER_IMPRESSION_EVENT = 'banner_impression' as const;
 export const BANNER_DISMISSED_EVENT = 'banner_dismissed' as const;
 
 export const SdkBannerChannelEventSchema = z.object({
-  eventId: z.string().uuid(),
+  eventId: z.string().guid(),
   name: z.string().min(1).max(128),
   timestamp: z.string().datetime(),
-  bannerId: z.string().uuid(),
-  versionId: z.string().uuid(),
+  bannerId: z.string().guid(),
+  versionId: z.string().guid(),
   channelId: z.string().min(1),
-  experimentId: z.string().uuid().nullable().optional(),
+  experimentId: z.string().guid().nullable().optional(),
   variantId: z.string().nullable().optional(),
   identity: SdkIdentitySchema,
   context: SdkContextSchema.optional(),

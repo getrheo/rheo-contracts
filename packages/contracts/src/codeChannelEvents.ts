@@ -7,10 +7,10 @@ import { SdkContextSchema, SdkIdentitySchema } from './identity';
  * are not flow metrics and do not carry flow ids.
  */
 export const SdkCodeChannelEventSchema = z.object({
-  eventId: z.string().uuid(),
+  eventId: z.string().guid(),
   name: z.string().min(1).max(128),
   timestamp: z.string().datetime(),
-  experimentId: z.string().uuid().nullable().optional(),
+  experimentId: z.string().guid().nullable().optional(),
   variantId: z.string().nullable().optional(),
   identity: SdkIdentitySchema,
   context: SdkContextSchema.optional(),

@@ -5,13 +5,13 @@ import { SdkContextSchema, SdkIdentitySchema } from './identity';
 export const EventNameSchema = z.enum(EVENT_NAMES);
 
 export const SdkEventSchema = z.object({
-  eventId: z.string().uuid(),
+  eventId: z.string().guid(),
   name: EventNameSchema,
   timestamp: z.string().datetime(),
-  flowId: z.string().uuid(),
+  flowId: z.string().guid(),
   /** Resolved version the SDK was rendering when the event occurred. */
-  versionId: z.string().uuid(),
-  experimentId: z.string().uuid().nullable().optional(),
+  versionId: z.string().guid(),
+  experimentId: z.string().guid().nullable().optional(),
   variantId: z.string().nullable().optional(),
   stepId: z.string().nullable().optional(),
   identity: SdkIdentitySchema,

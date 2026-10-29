@@ -47,7 +47,7 @@ export const BannerSizingSchema = z
 export type BannerSizing = z.infer<typeof BannerSizingSchema>;
 
 export const BannerManifestObjectSchema = z.object({
-  bannerId: z.string().uuid(),
+  bannerId: z.string().guid(),
   schemaVersion: z.literal(MANIFEST_SCHEMA_VERSION).optional(),
   version: z.number().int().positive(),
   defaultLocale: LocaleCode,

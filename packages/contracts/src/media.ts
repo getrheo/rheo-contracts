@@ -4,14 +4,14 @@ import { MEDIA_TYPES } from './constants/index';
 export const MediaTypeSchema = z.enum(MEDIA_TYPES);
 
 export const MediaReferenceSchema = z.object({
-  mediaAssetId: z.string().uuid(),
+  mediaAssetId: z.string().guid(),
 });
 
 export type MediaReference = z.infer<typeof MediaReferenceSchema>;
 
 export const MediaAssetSchema = z.object({
-  id: z.string().uuid(),
-  orgId: z.string().uuid(),
+  id: z.string().guid(),
+  orgId: z.string().guid(),
   type: MediaTypeSchema,
   url: z.string().url(),
   name: z.string().nullable().optional(),

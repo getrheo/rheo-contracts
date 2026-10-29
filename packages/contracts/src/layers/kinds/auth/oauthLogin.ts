@@ -19,7 +19,7 @@ export const OAuthLoginPresetProviderSchema = z.object({
 
 export const OAuthLoginCustomProviderSchema = z.object({
   type: z.literal('custom'),
-  rowId: z.string().uuid(),
+  rowId: z.string().guid(),
   label: LocalizedTextSchema,
   family: z.enum(ICON_FAMILIES),
   iconName: z.string().min(1).max(128),

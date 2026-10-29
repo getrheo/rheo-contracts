@@ -62,7 +62,7 @@ const PROFILE_VALUE_SCHEMAS = {
  * Blank clears the column (`null`). JSON `null` and a missing field stay unset.
  * Swift identify encodes omitted optionals as JSON null, which must not clear.
  */
-export const optionalClearable = <Output>(schema: z.ZodType<Output, z.ZodTypeDef, string>) =>
+export const optionalClearable = <Output>(schema: z.ZodType<Output, string>) =>
   z.preprocess(
     (value: unknown) => {
       if (value === null || value === undefined) return undefined;
@@ -73,7 +73,7 @@ export const optionalClearable = <Output>(schema: z.ZodType<Output, z.ZodTypeDef
   );
 
 /** Blank, null, and omitted stay unset. Used by CSV import, which must not wipe stored values. */
-export const optionalProfileValue = <Output>(schema: z.ZodType<Output, z.ZodTypeDef, string>) =>
+export const optionalProfileValue = <Output>(schema: z.ZodType<Output, string>) =>
   z.preprocess((value: unknown) => {
     if (value === null || value === undefined) return undefined;
     if (typeof value === 'string' && value.trim() === '') return undefined;

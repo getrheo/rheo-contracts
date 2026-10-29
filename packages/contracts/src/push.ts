@@ -60,7 +60,7 @@ export const SdkPushUnregisterRequestSchema = z
 export type SdkPushUnregisterRequest = z.infer<typeof SdkPushUnregisterRequestSchema>;
 
 export const SdkPushRegisterResponseSchema = z.object({
-  subscriptionId: z.string().uuid(),
+  subscriptionId: z.string().guid(),
   platform: SdkPushPlatformSchema,
   provider: SdkPushProviderSchema,
 });
