@@ -8,7 +8,7 @@ import { BuilderMetaSchema, ThemeSchema } from './theme.js';
 
 /** Flow manifest object schema without cross-field superRefine (attached in flowManifestSchema.ts). */
 export const FlowManifestObjectBaseSchema = z.object({
-  flowId: z.string().uuid(),
+  flowId: z.string().guid(),
   /** Manifest schema version — see {@link MANIFEST_SCHEMA_VERSION}. */
   schemaVersion: z.literal(MANIFEST_SCHEMA_VERSION).optional(),
   version: z.number().int().positive(),
@@ -17,15 +17,9 @@ export const FlowManifestObjectBaseSchema = z.object({
   /** When null, the draft has no wired entry target (builder connects the canvas entry node). */
   entryScreenId: z.union([z.string().min(1), z.null()]),
   screens: z.array(ScreenSchema),
-  decisionNodes: z
-    .union([z.array(DecisionNodeSchema), z.undefined()])
-    .transform((x) => x ?? []),
-  externalSurfaceNodes: z
-    .union([z.array(ExternalSurfaceNodeSchema), z.undefined()])
-    .transform((x) => x ?? []),
-  sdkAttributeKeys: z
-    .union([z.array(z.string().min(1).max(128)), z.undefined()])
-    .transform((x) => x ?? []),
+  decisionNodes: z.array(DecisionNodeSchema).default([]),
+  externalSurfaceNodes: z.array(ExternalSurfaceNodeSchema).default([]),
+  sdkAttributeKeys: z.array(z.string().min(1).max(128)).default([]),
   theme: ThemeSchema.optional(),
   builderMeta: BuilderMetaSchema,
 });

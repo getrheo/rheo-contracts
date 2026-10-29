@@ -92,7 +92,7 @@ const OAuthProviderCustomLayerSchemaValidated = z.object({
   ...baseLayerShape,
   kind: z.literal('oauth_provider'),
   variant: z.literal('custom'),
-  rowId: z.string().uuid(),
+  rowId: z.string().guid(),
   buttonVariant: ButtonLayerVariantSchema,
   direction: z.enum(['vertical', 'horizontal']).optional(),
   gap: z.number().int().min(0).optional(),

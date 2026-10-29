@@ -53,22 +53,22 @@ export type SdkResolveResponse = {
  * unions grow (layout breakpoints).
  */
 export const SdkResolveExperimentSchema = z.object({
-  id: z.string().uuid(),
+  id: z.string().guid(),
   variantKey: z.string().min(1),
   variantId: z.string().min(1),
 });
 
 export const SdkResolveResponseSchema: z.ZodType<SdkResolveResponse> = z.object({
   kind: z.literal('flow'),
-  flowId: z.string().uuid(),
-  versionId: z.string().uuid(),
+  flowId: z.string().guid(),
+  versionId: z.string().guid(),
   versionNumber: z.number().int().positive(),
   /** Stable id clients can use as an ETag when re-fetching. */
   assignmentVersion: z.number().int().nonnegative(),
   environment: z.enum(['test', 'live']),
   /** PublicId of the channel that resolved this request (for client cache keys). */
   channelId: z.string(),
-  experimentId: z.string().uuid().nullable(),
+  experimentId: z.string().guid().nullable(),
   variantId: z.string().nullable(),
   experiment: SdkResolveExperimentSchema.nullable(),
   manifest: FlowManifestSchema,
@@ -91,13 +91,13 @@ export type SdkResolveAssignment = Omit<SdkResolveResponse, 'manifest' | 'mediaM
 
 export const SdkResolveAssignmentSchema: z.ZodType<SdkResolveAssignment> = z.object({
   kind: z.literal('flow'),
-  flowId: z.string().uuid(),
-  versionId: z.string().uuid(),
+  flowId: z.string().guid(),
+  versionId: z.string().guid(),
   versionNumber: z.number().int().positive(),
   assignmentVersion: z.number().int().nonnegative(),
   environment: z.enum(['test', 'live']),
   channelId: z.string(),
-  experimentId: z.string().uuid().nullable(),
+  experimentId: z.string().guid().nullable(),
   variantId: z.string().nullable(),
   experiment: SdkResolveExperimentSchema.nullable(),
   branding: BrandingSchema.optional(),
@@ -112,11 +112,11 @@ export const SdkResolveAssignmentSchema: z.ZodType<SdkResolveAssignment> = z.obj
 /** Join keys for correlating a terminal event with analytics / dashboard (no integration flags). */
 export const FlowTerminalCorrelationSchema = z.object({
   channelId: z.string(),
-  flowId: z.string().uuid(),
-  versionId: z.string().uuid(),
+  flowId: z.string().guid(),
+  versionId: z.string().guid(),
   assignmentVersion: z.number().int().nonnegative(),
   environment: z.enum(['test', 'live']),
-  experimentId: z.string().uuid().nullable(),
+  experimentId: z.string().guid().nullable(),
   variantId: z.string().nullable(),
 });
 export type FlowTerminalCorrelation = z.infer<typeof FlowTerminalCorrelationSchema>;

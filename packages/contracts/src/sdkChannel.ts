@@ -52,13 +52,13 @@ export type SdkBannerResolveResponse = {
 
 export const SdkBannerResolveResponseSchema: z.ZodType<SdkBannerResolveResponse> = z.object({
   kind: z.literal('banner'),
-  bannerId: z.string().uuid(),
-  versionId: z.string().uuid(),
+  bannerId: z.string().guid(),
+  versionId: z.string().guid(),
   versionNumber: z.number().int().positive(),
   assignmentVersion: z.number().int().nonnegative(),
   environment: z.enum(['test', 'live']),
   channelId: z.string(),
-  experimentId: z.string().uuid().nullable(),
+  experimentId: z.string().guid().nullable(),
   variantId: z.string().nullable(),
   experiment: SdkResolveExperimentSchema.nullable(),
   manifest: BannerManifestSchema,

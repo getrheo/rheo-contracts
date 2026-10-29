@@ -49,9 +49,9 @@ export const WebSdkOriginsSchema = z.array(WebSdkOriginSchema).max(WEB_SDK_ORIGI
 
 export const StripeCheckoutAttemptCreateRequestSchema = z.object({
   channelId: z.string().min(1).max(128),
-  flowId: z.string().uuid(),
-  versionId: z.string().uuid(),
-  experimentId: z.string().uuid().nullable().optional(),
+  flowId: z.string().guid(),
+  versionId: z.string().guid(),
+  experimentId: z.string().guid().nullable().optional(),
   variantId: z.string().min(1).max(128).nullable().optional(),
   surfaceId: z.string().min(1).max(128),
   appUserId: z.string().min(1).max(256),
@@ -63,7 +63,7 @@ export type StripeCheckoutAttemptCreateRequest = z.infer<
 >;
 
 export const StripeCheckoutAttemptCreateResponseSchema = z.object({
-  attemptId: z.string().uuid(),
+  attemptId: z.string().guid(),
   expiresAt: z.string().datetime(),
 });
 export type StripeCheckoutAttemptCreateResponse = z.infer<
@@ -71,7 +71,7 @@ export type StripeCheckoutAttemptCreateResponse = z.infer<
 >;
 
 export const StripeCheckoutAttemptStatusResponseSchema = z.object({
-  attemptId: z.string().uuid(),
+  attemptId: z.string().guid(),
   status: StripeCheckoutAttemptStatusSchema,
 });
 export type StripeCheckoutAttemptStatusResponse = z.infer<
